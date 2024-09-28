@@ -37,12 +37,46 @@ class RegisterationController extends Controller
         $data['image'] = $imagePath;
         $data['password']=Hash::make($request->password);
        $user=User::create($data);
+       $token =$user->createToken($request->name);
+        return[
+            new UserResource($user),
+            'token' => $token->plainTextToken,
 
-       return new UserResource($user);
+        ] ;
 
 
     }
     public function Login(Request $request){
-        dd('login');
+        $loginValidator=Validator::make($request->all(),[
+            'email' => ['required', 'email','exists:users'],
+            'password' => ['required', 'min:8'],
+        ]);
+        if ($loginValidator->fails()){
+            return response()->json([
+                'validation_errors' => $loginValidator->errors(),
+                'message' => 'Login Failed',
+
+            ],422);
+        }
+    $user = User::where('email',$request->email)->first();
+        if ( !$user|| !Hash::check($request->password, $user->password)){
+            return response()->json([
+                'message' => 'Invalid Password',
+            ],401);
+        }
+        $token =$user->createToken($user->name);
+
+        return[
+            $user,
+            'token' => $token->plainTextToken,
+        ] ;
     }
+    public function Logout(Request $request){
+       $user= $request->user();
+        $user->tokens()->delete();
+        return response()->json([
+           'message' => 'Logged Out Successfully',
+        ]);
+    }
+
 }
