@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Test;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
@@ -11,6 +12,16 @@ class TestController extends Controller
      * Display a listing of the resource.
      */
     public function index()
+    {
+        $tests = Test::all();
+        return $tests ;  
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
         //
     }
@@ -26,7 +37,16 @@ class TestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id) 
+    {
+        $test = Test::with('questions')->findOrFail($id);
+        return $test ;
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Test $test)
     {
         //
     }
@@ -34,7 +54,7 @@ class TestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Test $test)
     {
         //
     }
@@ -42,7 +62,7 @@ class TestController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Test $test)
     {
         //
     }
