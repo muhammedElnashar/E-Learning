@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Test;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
@@ -12,14 +11,6 @@ class TestController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
     {
         //
     }
@@ -35,15 +26,7 @@ class TestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Test $test)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Test $test)
+    public function show(string $id)
     {
         //
     }
@@ -51,7 +34,7 @@ class TestController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Test $test)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +42,7 @@ class TestController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Test $test)
+    public function destroy(string $id)
     {
         //
     }
