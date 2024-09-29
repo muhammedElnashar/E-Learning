@@ -9,3 +9,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
  Route::post('/register',[RegisterationController::class,'Register']);
  Route::post('/login',[RegisterationController::class,'Login']);
+
+Route::apiResource('tests', Api\TestController::class);
+Route::apiResource('questions', Api\QuestionController::class);
+Route::apiResource('answers', Api\AnswerController::class);
+Route::apiResource('user-answers', Api\UserAnswerController::class);
+Route::apiResource('scores', Api\ScoreController::class);
