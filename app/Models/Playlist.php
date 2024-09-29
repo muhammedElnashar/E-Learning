@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Playlist extends Model
 {
     use HasFactory;
+    protected $table = 'playlists';
+
+    protected $fillable = ['playlist_id', 'title', 'description'];
+
+    public function videos(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Video::class, 'playlist_id');
+    }
 }
