@@ -3,47 +3,110 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CourseController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the courses.
      */
     public function index()
     {
-        //
+        $courses = Course::all();
+        return response()->json($courses, 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created course in storage.
      */
     public function store(Request $request)
     {
-        //
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'description' => 'required',
+            'price' => 'required_if:is_free,false|integer|min:0',
+            'is_free' => 'required|boolean',
+            'instructor_id' => 'required|exists:users,id',
+            'playlist_id' => 'required|exists:playlists,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        // Create a new course
+        $course = Course::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'price' => $request->is_free ? 0 : $request->price,
+            'is_free' => $request->is_free,
+            'instructor_id' => $request->instructor_id,
+            'playlist_id' => $request->playlist_id,
+        ]);
+
+        return response()->json($course, 201);
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified course.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $course = Course::find($id);
+
+        if (!$course) {
+            return response()->json(['message' => 'Course not found'], 404);
+        }
+
+        return response()->json($course, 200);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified course in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $course = Course::find($id);
+
+        if (!$course) {
+            return response()->json(['message' => 'Course not found'], 404);
+        }
+
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'title' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|required',
+            'price' => 'required_if:is_free,false|integer|min:0',
+            'is_free' => 'sometimes|required|boolean',
+            'instructor_id' => 'sometimes|required|exists:users,id',
+            'playlist_id' => 'sometimes|required|exists:playlists,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        // Update course fields
+        $course->update($request->all());
+
+        return response()->json($course, 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified course from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $course = Course::find($id);
+
+        if (!$course) {
+            return response()->json(['message' => 'Course not found'], 404);
+        }
+
+        $course->delete();
+        return response()->json(['message' => 'Course deleted successfully'], 200);
     }
 }
