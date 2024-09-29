@@ -1,6 +1,5 @@
 <?php
-
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Test;
@@ -8,62 +7,43 @@ use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $tests = Test::all();
-        return $tests ;  
-
+        return Test::all(); 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $test = Test::create($request->all()); 
+        return response()->json($test, 201); 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id) 
+    public function show($id)
     {
-        $test = Test::with('questions')->findOrFail($id);
-        return $test ;
+        $test = Test::find($id); 
+        if (!$test) {
+            return response()->json(['message' => 'Test not found'], 404);
+        }
+        return $test;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Test $test)
+    public function update(Request $request, $id)
     {
-        //
+        $test = Test::find($id);
+        if (!$test) {
+            return response()->json(['message' => 'Test not found'], 404);
+        }
+        $test->update($request->all()); 
+        return response()->json($test, 200); 
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Test $test)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Test $test)
-    {
-        //
+        $test = Test::find($id);
+        if (!$test) {
+            return response()->json(['message' => 'Test not found'], 404);
+        }
+        $test->delete();
+        return response()->json(['message' => 'Test deleted'], 204); 
     }
 }
