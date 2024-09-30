@@ -43,8 +43,6 @@ class RegisterationController extends Controller
             'token' => $token->plainTextToken,
 
         ] ;
-
-
     }
     public function Login(Request $request){
         $loginValidator=Validator::make($request->all(),[

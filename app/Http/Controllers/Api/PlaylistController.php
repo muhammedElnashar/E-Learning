@@ -3,47 +3,31 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Playlist;
+use App\Services\YouTubeService;
 use Illuminate\Http\Request;
 
 class PlaylistController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    protected $youtubeService;
+
+    public function __construct(YouTubeService $youtubeService)
+    {
+        $this->youtubeService = $youtubeService;
+    }
+
     public function index()
     {
-        //
+        return Playlist::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function show($playlistId)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $playlistWithVideos= Playlist::findorfail($playlistId)->videos;
+        if (isset($videos['error'])) {
+            return $videos['error'];
+        }
+        return $playlistWithVideos;
     }
 }
