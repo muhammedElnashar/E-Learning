@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,7 +16,7 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::all();
-        return response()->json($courses, 200);
+        return $courses;
     }
 
     /**
@@ -23,7 +24,8 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request data
+        $courses=$request->all();
+
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'required',
@@ -36,8 +38,11 @@ class CourseController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
+        $instructor = User::find($request->instructor_id);
+        if ($instructor->role_id != 2) {
+            return response()->json(['message' => 'You do not have permission to create courses.'], 403);
+        }
 
-        // Create a new course
         $course = Course::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -75,7 +80,7 @@ class CourseController extends Controller
             return response()->json(['message' => 'Course not found'], 404);
         }
 
-        // Validate the request data
+        
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required',
@@ -89,7 +94,6 @@ class CourseController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        // Update course fields
         $course->update($request->all());
 
         return response()->json($course, 200);
