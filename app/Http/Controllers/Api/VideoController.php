@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Playlist;
 use App\Models\Video;
 use Illuminate\Http\Request;
 
@@ -29,8 +30,9 @@ class VideoController extends Controller
      */
     public function show(string $id)
     {
-        $video=Video::findOrfail($id);
-        return $video;
+        $videos=Video::findOrFail($id);
+        dd($videos->playlist);
+        return $videos;
     }
 
     /**

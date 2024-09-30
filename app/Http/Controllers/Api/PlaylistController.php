@@ -34,6 +34,7 @@ class PlaylistController extends Controller
     {
 //        $videos = $this->youtubeService->getVideos($playlistId);
         $playlist= Playlist::findorfail($playlistId);
+        $playlist->videos;
 
         if (isset($videos['error'])) {
             return $videos['error'];

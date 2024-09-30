@@ -14,6 +14,6 @@ class Playlist extends Model
 
     public function videos(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Video::class, 'playlist_id');
+        return $this->hasMany(Video::class);
     }
 }
