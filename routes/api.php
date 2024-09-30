@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\organizarController;
 use App\Http\Controllers\Api\RegisterationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -10,3 +11,6 @@ Route::get('/user', function (Request $request) {
  Route::post('/register',[RegisterationController::class,'Register']);
  Route::post('/login',[RegisterationController::class,'Login']);
  Route::post('/logout',[RegisterationController::class,'Logout'])->middleware('auth:sanctum');
+
+Route::apiResource('/organizar', organizarController::class);
+Route::post('/organizar/{id}/restore', [organizarController::class, 'restore']);
