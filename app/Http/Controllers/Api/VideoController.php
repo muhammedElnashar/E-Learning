@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Video;
 use Illuminate\Http\Request;
 
 class VideoController extends Controller
@@ -12,7 +13,7 @@ class VideoController extends Controller
      */
     public function index()
     {
-        //
+        return Video::all();
     }
 
     /**
@@ -28,7 +29,8 @@ class VideoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $video=Video::findOrfail($id);
+        return $video;
     }
 
     /**
@@ -36,7 +38,7 @@ class VideoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
     }
 
     /**
