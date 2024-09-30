@@ -2,21 +2,13 @@
 
 namespace App\Imports;
 
-use App\Models\Test;
-use Maatwebsite\Excel\Concerns\ToModel;
+use App\Models\Answer;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Illuminate\Support\Collection;
 
-class ExamImport implements ToModel
+class ExamImport implements ToCollection
 {
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-    public function model(array $row)
+    public function collection(Collection $rows)
     {
-        return new Test([
-            "question" =>$row["question"],
-            "answer" =>$row["answer"],
-        ]);
     }
 }

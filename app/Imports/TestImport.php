@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Answer;
 use App\Models\Question;
 use App\Models\Test;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -15,11 +16,6 @@ class TestImport implements ToModel
     */
     public function model(array $row)
     {
-        $test=Test::Where('deleted_at',null)->latest('created_at')->first();
-        return new Question([
-            "question" =>$row[0],
-            "answer" =>$row[1],
-            "test_id"=>$test->id
-        ]);
+
     }
 }

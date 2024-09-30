@@ -1,49 +1,53 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Imports\ExamImport;
+use App\Imports\TestImport;
+use App\Models\Test;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Test::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $test = Test::create($request->all());
+        return response()->json($test, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $test = Test::find($id);
+        if (!$test) {
+            return response()->json(['message' => 'Test not found'], 404);
+        }
+        return $test;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $test = Test::find($id);
+        if (!$test) {
+            return response()->json(['message' => 'Test not found'], 404);
+        }
+        $test->update($request->all());
+        return response()->json($test, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $test = Test::find($id);
+        if (!$test) {
+            return response()->json(['message' => 'Test not found'], 404);
+        }
+        $test->delete();
+        return response()->json(['message' => 'Test deleted'], 204);
     }
+
 }
