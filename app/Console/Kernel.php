@@ -5,5 +5,5 @@ use Illuminate\Console\Scheduling\Schedule;
 
 function schedule(Schedule $schedule)
 {
-    $schedule->command('youtube:fetch-playlists')->daily(); // Run this daily
+    $schedule->command('youtube:fetch-playlists')->daily(); 
 }
