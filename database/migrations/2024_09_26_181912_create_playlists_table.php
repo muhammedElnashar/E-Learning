@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('playlist_id')->unique();
             $table->longText('description');
+            $table->string('thumbnail');
             $table->timestamps();
         });
     }

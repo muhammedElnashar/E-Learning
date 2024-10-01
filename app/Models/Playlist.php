@@ -10,7 +10,7 @@ class Playlist extends Model
     use HasFactory;
     protected $table = 'playlists';
 
-    protected $fillable = ['playlist_id', 'title', 'description'];
+    protected $fillable = ['playlist_id', 'title', 'description','thumbnail'];
 
     public function videos(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
