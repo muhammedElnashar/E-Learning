@@ -14,6 +14,7 @@ Route::get('/user', function (Request $request) {
  Route::post('/register',[RegisterationController::class,'Register']);
  Route::post('/login',[RegisterationController::class,'Login']);
  Route::post('/logout',[RegisterationController::class,'Logout'])->middleware('auth:sanctum');
+ Route::post("/upload-exam", [TestController::class,'storeExamFile']);
 
 Route::apiResource('tests', TestController::class);
 Route::apiResource('questions', QuestionController::class);

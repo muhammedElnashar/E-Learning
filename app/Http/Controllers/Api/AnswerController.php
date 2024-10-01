@@ -28,7 +28,7 @@ class AnswerController extends Controller
         if (!$answer) {
             return response()->json(['message' => 'Answer not found'], 404);
         }
-        return  AnswerResource::collection($answer);
+        return new AnswerResource($answer);
     }
 
     public function update(Request $request, $id)
@@ -50,5 +50,5 @@ class AnswerController extends Controller
         $answer->delete();
         return response()->json([
             'message' => 'Deleted  Successfully',
-        ]);    }
+        ],200);    }
 }
