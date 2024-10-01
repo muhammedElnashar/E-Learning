@@ -24,10 +24,11 @@ class PlaylistController extends Controller
 
     public function show($playlistId)
     {
-        $playlistWithVideos= Playlist::findorfail($playlistId)->videos;
+        $playlist= Playlist::findorfail($playlistId);
+        $playlistWithVideos= $playlist->videos;
         if (isset($videos['error'])) {
             return $videos['error'];
         }
-        return $playlistWithVideos;
+        return [$playlist,$playlistWithVideos];
     }
 }
