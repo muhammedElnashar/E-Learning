@@ -21,10 +21,8 @@ class FetchYouTubePlaylists extends Command
 
     public function handle()
     {
-        // Replace with your channel ID
         $channelId = 'UC_x5XG1OV2P6uZZ5FSM9Ttw';
 
-        // Fetch playlists
         $playlists = $this->youtubeService->getPlaylists($channelId);
 
         foreach ($playlists as $playlistData) {
@@ -33,11 +31,10 @@ class FetchYouTubePlaylists extends Command
                 [
                     'title' => $playlistData['snippet']['title'],
                     'description' => $playlistData['snippet']['description'],
-                    'thumbnail' => $playlistData['snippet']['thumbnails']['default']['url'],
+                    'thumbnail' => $playlistData['snippet']['thumbnails']['high']['url'],
                 ]
             );
 
-            // Fetch videos for the playlist
             $videos = $this->youtubeService->getVideos($playlistData['id']);
 
             foreach ($videos as $videoData) {

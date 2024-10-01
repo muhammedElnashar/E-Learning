@@ -17,10 +17,10 @@ class YouTubeService
         $response = Http::get("https://www.googleapis.com/youtube/v3/playlists", [
             'part' => 'snippet',
             'channelId' => $channelId,
-            'maxResults' => 50, // You can paginate later if there are more than 50
+            'maxResults' => 50,
             'key' => $this->apiKey,
         ]);
-
+//                dd($response->json());
         return $response->json()['items'] ?? [];
     }
 
