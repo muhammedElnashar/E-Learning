@@ -20,7 +20,7 @@ class YouTubeService
             'maxResults' => 50,
             'key' => $this->apiKey,
         ]);
-
+//                dd($response->json());
         return $response->json()['items'] ?? [];
     }
 

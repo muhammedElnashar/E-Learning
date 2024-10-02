@@ -19,6 +19,7 @@ return new class extends Migration
             $table->boolean('is_free');
             $table->foreignId('instructor_id');
             $table->foreignId('playlist_id');
+            $table->string('thumbnail');
             $table->foreign('instructor_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('playlist_id')->references('id')->on('playlists')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

@@ -19,13 +19,16 @@ class PlaylistController extends Controller
 
     public function index()
     {
-        return PlayList::all();
+        return Playlist::all();
     }
 
     public function show($playlistId)
     {
         $playlist= Playlist::findorfail($playlistId);
-        $playlist->videos;
-        return $playlist;
+            $playlist->videos;
+        if (isset($videos['error'])) {
+            return $videos['error'];
+        }
+        return [$playlist];
     }
 }

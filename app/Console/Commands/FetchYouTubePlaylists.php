@@ -31,7 +31,7 @@ class FetchYouTubePlaylists extends Command
                 [
                     'title' => $playlistData['snippet']['title'],
                     'description' => $playlistData['snippet']['description'],
-                    'thumbnail' => $playlistData['snippet']['thumbnails']['default']['url'],
+                    'thumbnail' => $playlistData['snippet']['thumbnails']['high']['url'],
                 ]
             );
 
