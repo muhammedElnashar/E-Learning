@@ -54,5 +54,10 @@ class TestController extends Controller
             'message' => 'Deleted  Successfully',
         ],200);
     }
+    public function storeExamFile(Request $request){
+        $file = $request->file("excel_file");
+         Excel::import(new TestImport, $file, null, \Maatwebsite\Excel\Excel::CSV);
+         Excel::import(new ExamImport, $file, null, \Maatwebsite\Excel\Excel::CSV);
 
+    }
 }

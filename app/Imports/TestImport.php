@@ -16,6 +16,11 @@ class TestImport implements ToModel
     */
     public function model(array $row)
     {
+        $test=Test::Where('deleted_at',null)->latest('created_at')->first();
+        return new Question([
+            "test_id"=>$test->id,
+            "question_text" =>$row[0],
+        ]);
 
     }
 }
