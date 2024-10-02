@@ -31,7 +31,7 @@ class VideoController extends Controller
     public function show(string $id)
     {
         $videos=Video::findOrFail($id);
-        dd($videos->playlist);
+        $videos->playlist;
         return $videos;
     }
 
