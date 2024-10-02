@@ -20,6 +20,6 @@ Route::get('/user', function (Request $request) {
 
 Route::apiResource('/organizar', organizarController::class);
 Route::post('/organizar/{id}/restore', [organizarController::class, 'restore']);
+Route::get('/organizartrashed', [organizarController::class, 'trashed']);
 
  Route::apiResource('/courses', CourseController::class);
- 

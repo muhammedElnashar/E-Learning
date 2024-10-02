@@ -16,8 +16,8 @@ class organizarController extends Controller
      */
     public function index()
     {
-        $organizar = User::whereIn('role_id', [2, 4])->get();
-        return new UserResource($organizar);
+        $organizar = User::whereIn('role_id', [2, 4])->whereNull('deleted_at')->get();
+        return UserResource::collection($organizar);
     }
 
     /**
@@ -41,7 +41,7 @@ class organizarController extends Controller
             "password_confirmation" => ['required'],
             'national_id' => ['required', 'digits:14', 'string', 'unique:users'],
             'gender' => ['required', 'string', 'in:Male,Female'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:1000'],
+            'image' => ['required', 'image'],
             'role_id' => ['required', 'in:Teacher,Moderator']
 
         ]);
@@ -67,7 +67,6 @@ class organizarController extends Controller
 
         $organizar = User::create($data);
         return [
-            'data' => new UserResource($organizar),
             'message' => 'Organizer has been created successfully',
         ];
     }
@@ -77,8 +76,14 @@ class organizarController extends Controller
      */
     public function show(string $id)
     {
-        $organizer = User::findOrFail($id);
-        return new UserResource($organizer);
+
+    $organizer = User::findOrFail($id);
+    if ($organizer->role_id != 2 && $organizer->role_id != 4) {
+        return response()->json([
+            'error' => 'This user not teacher or moderator.'
+        ], 403); 
+    }
+    return new UserResource($organizer);
     }
 
     /**
@@ -127,8 +132,7 @@ class organizarController extends Controller
                 return response()->json(['error' => 'Invalid role selected'], 400);
             }
         }
-        $organizar->fill($request->except(['image', 'role_id', 'password', 'password_confirmation']));
-
+        // $organizar->fill($request->except(['image', 'role_id', 'password', 'password_confirmation']));
         $organizar->save();
 
         return response()->json([
@@ -163,5 +167,11 @@ class organizarController extends Controller
         return response()->json([
             'message' => 'User is not deleted',
         ]);
+    }
+
+    public function trashed()
+    {
+        $trashedUsers = User::onlyTrashed()->get();
+        return UserResource::collection($trashedUsers);
     }
 }
