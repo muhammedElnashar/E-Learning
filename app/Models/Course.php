@@ -15,11 +15,12 @@ class Course extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'title', 
-        'description', 
-        'price', 
-        'is_free', 
-        'instructor_id', 
+        'title',
+        'description',
+        'price',
+        'is_free',
+        'instructor_id',
         'playlist_id',
+        'thumbnail',
     ];
 }

@@ -50,6 +50,7 @@ class CourseController extends Controller
             'is_free' => $request->is_free,
             'instructor_id' => $request->instructor_id,
             'playlist_id' => $request->playlist_id,
+            'thumbnail'=>$request->thumbnail
         ]);
 
         return response()->json($course, 201);
@@ -80,7 +81,7 @@ class CourseController extends Controller
             return response()->json(['message' => 'Course not found'], 404);
         }
 
-        
+
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required',
