@@ -103,11 +103,9 @@ class organizarController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['sometimes', 'string', 'max:255'],
             'email' => ['sometimes', 'string', 'email', 'max:255', 'unique:users,email,' . $organizar->id],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-            'password_confirmation' => ['nullable'],
             'national_id' => ['sometimes', 'digits:14', 'string', 'unique:users,national_id,' . $organizar->id],
             'gender' => ['sometimes', 'string', 'in:Male,Female'],
-            'image' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:1000'],
+            'image' => ['sometimes', 'image','mimes:jpeg,jpg,png'],
             'role_id' => ['sometimes', 'in:Teacher,Moderator'],
         ]);
 
@@ -132,7 +130,7 @@ class organizarController extends Controller
                 return response()->json(['error' => 'Invalid role selected'], 400);
             }
         }
-        // $organizar->fill($request->except(['image', 'role_id', 'password', 'password_confirmation']));
+        $organizar->fill($request->except(['image', 'role_id', 'password', 'password_confirmation']));
         $organizar->save();
 
         return response()->json([
