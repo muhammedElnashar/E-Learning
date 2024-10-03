@@ -20,6 +20,13 @@ class organizarController extends Controller
         return UserResource::collection($organizar);
     }
 
+    public function getTeacher()
+    {
+        $teacher = User::whereIn('role_id', [2])->whereNull('deleted_at')->get();
+        return UserResource::collection($teacher);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -105,8 +112,8 @@ class organizarController extends Controller
             'email' => ['sometimes', 'string', 'email', 'max:255', 'unique:users,email,' . $organizar->id],
             'national_id' => ['sometimes', 'digits:14', 'string', 'unique:users,national_id,' . $organizar->id],
             'gender' => ['sometimes', 'string', 'in:Male,Female'],
-            'image' => ['sometimes', 'image','mimes:jpeg,jpg,png'],
-            'role_id' => ['sometimes', 'in:Teacher,Moderator'],
+            'image' => ['sometimes', 'image',],
+            // 'role_id' => ['sometimes', 'in:Teacher,Moderator'],
         ]);
 
         if ($validator->fails()) {

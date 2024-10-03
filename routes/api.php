@@ -24,3 +24,5 @@ Route::post('/organizar/{id}/restore', [organizarController::class, 'restore']);
  Route::apiResource('/courses', CourseController::class);
  
 Route::get('/organizartrashed', [organizarController::class, 'trashed']);
+
+Route::get('/teacher', [organizarController::class, 'getTeacher']);
