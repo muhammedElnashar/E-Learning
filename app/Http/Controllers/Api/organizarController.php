@@ -113,7 +113,7 @@ class organizarController extends Controller
             'national_id' => ['sometimes', 'digits:14', 'string', 'unique:users,national_id,' . $organizar->id],
             'gender' => ['sometimes', 'string', 'in:Male,Female'],
             'image' => ['sometimes', 'image',],
-            // 'role_id' => ['sometimes', 'in:Teacher,Moderator'],
+            // 'role_id' => ['sometimes', 'string', 'in:Teacher,Moderator'],
         ]);
 
         if ($validator->fails()) {
