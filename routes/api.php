@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\PaymentController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -38,3 +39,8 @@ Route::apiResource('/courses', CourseController::class);
 Route::get('/organizartrashed', [organizarController::class, 'trashed']);
 
 Route::get('/teacher', [organizarController::class, 'getTeacher']);
+
+Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent']);
+Route::post('/store-payment', [PaymentController::class, 'storePayment']);
+Route::get('/user-payments', [PaymentController::class, 'getPayments']);
+Route::get('/payments', [PaymentController::class, 'getAllPayments']);
