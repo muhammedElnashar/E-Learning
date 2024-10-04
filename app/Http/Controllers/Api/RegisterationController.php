@@ -40,6 +40,8 @@ class RegisterationController extends Controller
        $token =$user->createToken($request->name);
         return[
             new UserResource($user),
+            'massage'=>'Register Successfully ',
+            'result'=>true,
             'token' => $token->plainTextToken,
 
         ] ;
@@ -65,7 +67,9 @@ class RegisterationController extends Controller
         $token =$user->createToken($user->name);
 
         return[
-            $user,
+           'data' =>  new UserResource($user),
+            'massage'=>'Login Successfully ',
+            'result'=>true,
             'token' => $token->plainTextToken,
         ] ;
     }

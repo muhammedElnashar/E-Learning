@@ -1,49 +1,63 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTestRequest;
+use App\Http\Requests\UpdateTestRequest;
+use App\Http\Resources\TestResource;
+use App\Imports\ExamImport;
+use App\Imports\TestImport;
+use App\Models\Test;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return TestResource::collection(Test::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreTestRequest $request)
     {
-        //
+        $test = Test::create($request->all());
+        return response()->json(new TestResource($test), 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $test = Test::find($id);
+        if (!$test) {
+            return response()->json(['message' => 'Test not found'], 404);
+        }
+        return new TestResource($test);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateTestRequest $request, $id)
     {
-        //
+        $test = Test::find($id);
+        if (!$test) {
+            return response()->json(['message' => 'Test not found'], 404);
+        }
+        $test->update($request->all());
+        return response()->json(new TestResource($test), 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $test = Test::find($id);
+        if (!$test) {
+            return response()->json(['message' => 'Test not found'], 404);
+        }
+        $test->delete();
+        return response()->json([
+            'message' => 'Deleted  Successfully',
+        ],200);
+    }
+    public function storeExamFile(Request $request){
+        $file = $request->file("excel_file");
+         Excel::import(new TestImport, $file, null, \Maatwebsite\Excel\Excel::CSV);
+         Excel::import(new ExamImport, $file, null, \Maatwebsite\Excel\Excel::CSV);
+
     }
 }

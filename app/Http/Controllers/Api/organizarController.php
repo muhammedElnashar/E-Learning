@@ -20,12 +20,15 @@ class organizarController extends Controller
         return UserResource::collection($organizar);
     }
 
-    public function getTeacher()
+    public function getAllTeachers()
     {
         $teacher = User::whereIn('role_id', [2])->whereNull('deleted_at')->get();
         return UserResource::collection($teacher);
     }
-
+    public function getTeacher($id){
+        $teacher=User::whereIn('role_id', [2])->whereNull('deleted_at')->where('id', $id)->first();
+        return UserResource::collection($teacher);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -88,7 +91,7 @@ class organizarController extends Controller
     if ($organizer->role_id != 2 && $organizer->role_id != 4) {
         return response()->json([
             'error' => 'This user not teacher or moderator.'
-        ], 403); 
+        ], 403);
     }
     return new UserResource($organizer);
     }
