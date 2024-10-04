@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PlaylistController;
 use App\Http\Controllers\Api\organizarController;
 use App\Http\Controllers\Api\RegisterationController;
@@ -26,3 +27,6 @@ Route::post('/organizar/{id}/restore', [organizarController::class, 'restore']);
 Route::get('/organizartrashed', [organizarController::class, 'trashed']);
 
 Route::get('/teacher', [organizarController::class, 'getTeacher']);
+
+Route::post('/makepayment', [PaymentController::class, 'makePayment']);
+Route::post('/storepayment', [PaymentController::class, 'storePayment']);
