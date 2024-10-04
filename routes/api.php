@@ -38,7 +38,8 @@ Route::apiResource('/courses', CourseController::class);
 
 Route::get('/organizartrashed', [organizarController::class, 'trashed']);
 
-Route::get('/teacher', [organizarController::class, 'getTeacher']);
+Route::get('/teacher', [organizarController::class, 'getAllTeachers']);
+Route::get('/teacher/{id}', [organizarController::class, 'getTeacher']);
 
 Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent']);
 Route::post('/store-payment', [PaymentController::class, 'storePayment']);
