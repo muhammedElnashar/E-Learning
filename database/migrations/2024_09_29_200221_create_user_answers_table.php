@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-      
+
     Schema::create('user_answers', function (Blueprint $table) {
         $table->id(); // Primary key
-        $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Foreign key to users
-        $table->foreignId('question_id')->constrained('questions')->onDelete('cascade'); // Foreign key to questions
-        $table->foreignId('answer_id')->constrained('answers')->onDelete('cascade'); // Foreign key to answers
+        $table->foreignId('user_id');
+        $table->foreignUuid('question_id');
+        $table->foreignId('answer_id');
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+        $table->foreign('answer_id')->references('id')->on('answers')->onDelete('cascade')->onUpdate('cascade');
+
         $table->timestamps();
     });
     }
