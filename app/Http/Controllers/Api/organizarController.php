@@ -26,8 +26,12 @@ class organizarController extends Controller
         return UserResource::collection($teacher);
     }
     public function getTeacher($id){
-        $teacher=User::whereIn('role_id', [2])->whereNull('deleted_at')->where('id', $id)->first();
-        return UserResource::collection($teacher);
+        $teacher=User::whereIn('role_id', [2])->whereNull('deleted_at')->where('id', $id)->get();
+        // dd($teacher);
+        return[
+
+           'teacher'=> UserResource::collection($teacher)
+        ];
     }
 
     /**
