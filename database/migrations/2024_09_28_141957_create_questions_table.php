@@ -12,17 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('questions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('test_id'); 
-            $table->text('question_text'); 
-            $table->timestamps(); 
-            $table->softDeletes(); 
+            $table->uuid('id');
+            $table->foreignId('test_id');
+            $table->foreign('test_id')->references('id')->on('tests')->onDelete('cascade')->onUpdate('cascade');
+            $table->text('question_text');
+            $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('test_id')
-                  ->references('id')
-                  ->on('tests')
-                  ->onDelete('cascade')
-                  ->onUpdate('cascade');
+
         });
     }
 

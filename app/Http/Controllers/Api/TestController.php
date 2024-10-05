@@ -13,6 +13,12 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class TestController extends Controller
 {
+public function __construct()
+{
+    $this->middleware('auth:sanctum');
+    $this->middleware('isAdmin')->only('store', 'update', 'destroy','storeExamFile');
+}
+
     public function index()
     {
         return TestResource::collection(Test::all());
@@ -20,7 +26,10 @@ class TestController extends Controller
 
     public function store(StoreTestRequest $request)
     {
-        $test = Test::create($request->all());
+        $test = Test::create($request->except('excel_file'));
+        $file = $request->file("excel_file");
+        Excel::import(new TestImport, $file, null, \Maatwebsite\Excel\Excel::CSV);
+        Excel::import(new ExamImport, $file, null, \Maatwebsite\Excel\Excel::CSV);
         return response()->json(new TestResource($test), 201);
     }
 
@@ -30,12 +39,29 @@ class TestController extends Controller
         if (!$test) {
             return response()->json(['message' => 'Test not found'], 404);
         }
-        return new TestResource($test);
+
+        return response()->json([
+            'test' => new TestResource($test),
+            'questions' => $test->questions->map(function ($question) {
+                return [
+                    'question_text' => $question->question_text,
+                    'answers' => $question->answers->map(function ($answer) {
+                        return [
+                            'id' => $answer->question_id,
+                            'answer_text' => $answer->answer_text,
+                            'is_correct' => $answer->is_correct
+                        ];
+                    }),
+                ];
+            })
+        ]);
+
     }
 
     public function update(UpdateTestRequest $request, $id)
     {
         $test = Test::find($id);
+
         if (!$test) {
             return response()->json(['message' => 'Test not found'], 404);
         }
@@ -58,6 +84,5 @@ class TestController extends Controller
         $file = $request->file("excel_file");
          Excel::import(new TestImport, $file, null, \Maatwebsite\Excel\Excel::CSV);
          Excel::import(new ExamImport, $file, null, \Maatwebsite\Excel\Excel::CSV);
-
     }
 }
