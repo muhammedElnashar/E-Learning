@@ -24,7 +24,7 @@ class PaymentController extends Controller
         $course = Course::findOrFail($request->course_id);
         $amount = $course->price * 100;
 
-        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));    
+        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
         try {
             $paymentIntent = PaymentIntent::create([
@@ -37,12 +37,13 @@ class PaymentController extends Controller
             ]);
 
             return response()->json([
-                'clientSecret' => $paymentIntent->client_secret,
+                'clientqSecret' => $paymentIntent->client_secret,
             ]);
 
         } catch (\Exception $e) {
             \Log::error('Stripe Payment Error: ' . $e->getMessage());
-            return response()->json(['error' => 'Failed to create payment intent.'], 500);
+//            return response()->json(['error' => 'Failed to create payment intent.'], 500);
+            return response()->json([$e->getMessage()]);
         }
     }
     public function storePayment(Request $request){
@@ -64,7 +65,7 @@ class PaymentController extends Controller
     }else{
         return response()->json(['error' => 'Payment failed.'], 400);
     }
-    
+
     }
     public function getPayments(Request $request)
     {
