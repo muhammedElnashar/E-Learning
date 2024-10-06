@@ -145,10 +145,12 @@ class RegisterationController extends Controller
 
         $token = $user->createToken($user->name);
 
-        return [
-            $user,
+        return[
+            'data' =>  new UserResource($user),
+            'massage'=>'Login Successfully ',
+            'result'=>true,
             'token' => $token->plainTextToken,
-        ];
+        ] ;
     }
 
     public function Logout(Request $request)
