@@ -23,8 +23,8 @@ Route::post('/login', [RegisterationController::class,'Login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/students', RegisterationController::class);
-    Route::post('/students/{id}/restore', [RegisterationController::class, 'restore']);
-    Route::get('/students/trashed', [RegisterationController::class, 'trashed']);
+    Route::post('/student/{id}/restore', [RegisterationController::class, 'restore']);
+    Route::get('/students-trashed', [RegisterationController::class, 'trashed']);
     Route::post('/logout', [RegisterationController::class,'Logout']);
     //organizer and teacher
     Route::get('/teacher', [organizarController::class, 'getAllTeachers']);
