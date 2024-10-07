@@ -63,8 +63,8 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = Course::find($id);
-        $teacher= User::whereIn('role_id', [2])->whereNull('deleted_at')->where('id', [$course->instructor_id])->get();
-        $course->teacherName = $teacher->name;
+//        $teacher= User::whereIn('role_id', [2])->whereNull('deleted_at')->where('id', [$course->instructor_id])->get();
+//        $course->teacherName = $teacher->name;
 
         if (!$course) {
             return response()->json(['message' => 'Course not found'], 404);
