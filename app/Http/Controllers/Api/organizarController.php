@@ -27,7 +27,10 @@ class organizarController extends Controller
     }
     public function getTeacher($id){
         $teacher=User::whereIn('role_id', [2])->whereNull('deleted_at')->where('id', $id)->get();
-        return UserResource::collection($teacher);
+        // dd($teacher);
+        return[
+           'teacher'=> UserResource::collection($teacher)
+        ];
     }
 
     /**
