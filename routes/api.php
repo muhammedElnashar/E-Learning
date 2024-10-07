@@ -20,7 +20,7 @@ use App\Http\Controllers\Api\CourseController;
 Route::post('/register', [RegisterationController::class,'Register']);
 Route::post('/login', [RegisterationController::class,'Login']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [RegisterationController::class,'Logout']);
     //organizer and teacher
     Route::apiResource('/organizar', organizarController::class);

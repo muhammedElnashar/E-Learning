@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreScoreRequest;
 use App\Models\Score;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ScoreController extends Controller
 {
@@ -13,10 +15,16 @@ class ScoreController extends Controller
         return Score::all();
     }
 
-    public function store(Request $request)
+    public function store(StoreScoreRequest $request)
     {
-        $score = Score::create($request->all());
-        return response()->json($score, 201);
+       $data=$request->all();
+        $data['user_id']=Auth::id();
+        $score = Score::create($data);
+        return response()->json([
+            $score,
+            'status' => true,
+
+        ], 201);
     }
 
     public function show($id)
