@@ -21,6 +21,10 @@ use App\Http\Controllers\Api\PaymentController;
 Route::post('/register', [RegisterationController::class,'Register']);
 Route::post('/login', [RegisterationController::class,'Login']);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('/students', RegisterationController::class);
+    Route::post('/students/{id}/restore', [RegisterationController::class, 'restore']);
+    Route::get('/students/trashed', [RegisterationController::class, 'trashed']);
 // Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [RegisterationController::class,'Logout']);
     //organizer and teacher
@@ -46,8 +50,7 @@ Route::post('/login', [RegisterationController::class,'Login']);
     Route::post('/store-payment', [PaymentController::class, 'storePayment']);
     Route::get('/user-payments', [PaymentController::class, 'getPayments']);
     Route::get('/payments', [PaymentController::class, 'getAllPayments']);
-// });
-
+});
 
 
 
