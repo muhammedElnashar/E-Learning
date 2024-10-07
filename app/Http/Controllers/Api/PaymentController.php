@@ -9,6 +9,7 @@ use Stripe\PaymentIntent;
 use App\Models\Payment;
 use App\Models\Enrollment;
 use App\Models\Course;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -77,6 +78,14 @@ class PaymentController extends Controller
     }
     public function getAllPayments(Request $request){
         $payments = Payment::all();
-        return response()->json(['payments' => $payments]);
+        $courseIds = $payments->pluck('course_id')->toArray();
+        $courses = Course::whereIn('id', $courseIds)->get();
+        $usersIds = $payments->pluck('user_id')->toArray();
+        $users = User::whereIn('id', $usersIds)->get();
+        return response()->json([
+            'payments' => $payments,
+            'courses' => $courses,
+            'users' => $users,
+        ]);
     }
 }
