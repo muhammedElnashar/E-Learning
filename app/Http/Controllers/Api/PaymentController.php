@@ -77,15 +77,9 @@ class PaymentController extends Controller
         return $courses;
     }
     public function getAllPayments(Request $request){
-        $payments = Payment::all();
-        $courseIds = $payments->pluck('course_id')->toArray();
-        $courses = Course::whereIn('id', $courseIds)->get();
-        $usersIds = $payments->pluck('user_id')->toArray();
-        $users = User::whereIn('id', $usersIds)->get();
+        $payments = Payment::with(['user', 'course'])->get();
         return response()->json([
             'payments' => $payments,
-            'courses' => $courses,
-            'users' => $users,
         ]);
     }
 }

@@ -55,8 +55,15 @@ class   RegisterationController extends Controller
     {
         $student = User::where('role_id', 3)->findOrFail($id);
         return new UserResource($student);
+
     }
 
+    public function index()
+    {
+        $student = User::where('role_id', 3)->get();
+        return response()->json(UserResource::collection($student), 200);
+
+    }
     public function update(Request $request, $id)
     {
         $student = User::where('role_id', 3)->findOrFail($id);

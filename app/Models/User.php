@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Payment;
+
 
 class User extends Authenticatable
 {
@@ -70,4 +72,8 @@ class User extends Authenticatable
         {
             return $this->hasMany(Score::class);
         }
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }
