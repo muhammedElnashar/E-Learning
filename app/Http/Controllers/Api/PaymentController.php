@@ -35,9 +35,8 @@ class PaymentController extends Controller
                     'course_id' => $course->id,
                 ],
             ]);
-
             return response()->json([
-                'clientqSecret' => $paymentIntent->client_secret,
+                'clientSecret' => $paymentIntent->client_secret,
             ]);
 
         } catch (\Exception $e) {
