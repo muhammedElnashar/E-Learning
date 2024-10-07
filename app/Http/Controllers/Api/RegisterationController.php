@@ -108,6 +108,11 @@ class   RegisterationController extends Controller
         ]);
     }
 
+    public function trashed()
+    {
+        $trashedStudents = User::onlyTrashed()->where('role_id', 3)->get();
+        return UserResource::collection($trashedStudents);
+    }
     public function restore($id)
     {
         $student = User::withTrashed()->where('role_id', 3)->findOrFail($id);
@@ -122,11 +127,7 @@ class   RegisterationController extends Controller
         ]);
     }
 
-    public function trashed()
-    {
-        $trashedStudents = User::onlyTrashed()->where('role_id', 3)->get();
-        return UserResource::collection($trashedStudents);
-    }
+
 
     public function Login(Request $request)
     {
