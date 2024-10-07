@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\PaymentController;
-use App\Http\Controllers\Api\EnrollmentController;
 
 /*Route::get('/user', function (Request $request) {
     return $request->user();
@@ -50,11 +49,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/store-payment', [PaymentController::class, 'storePayment']);
     Route::get('/user-payments', [PaymentController::class, 'getPayments']);
     Route::get('/payments', [PaymentController::class, 'getAllPayments']);
-
-    //enrollment
-    Route::get('enrollments', [EnrollmentController::class, 'index']);
-    Route::get('enrollments', [EnrollmentController::class, 'show']);
 });
+
+
 
 
 
