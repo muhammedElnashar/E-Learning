@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserAnswerRequest;
 use App\Models\UserAnswer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserAnswerController extends Controller
 {
@@ -15,9 +17,25 @@ class UserAnswerController extends Controller
 
     public function store(Request $request)
     {
-        $userAnswer = UserAnswer::create($request->all());
-        return response()->json($userAnswer, 201);
+        $data = $request->all();
+        $data['user_id'] = Auth::id();
+        $userAnswers = [];
+        foreach ($data['question_id'] as $key => $questionId) {
+            $userAnswer = UserAnswer::create([
+                'question_id' => $questionId,
+                'answer_id' => $data['answer_id'][$key],
+                'user_id' => $data['user_id'],
+            ]);
+
+            $userAnswers[] = $userAnswer;
+        }
+
+        return response()->json([
+        'answer'=>    $userAnswers,
+            'status' =>     true,
+        ], 201);
     }
+
 
     public function show($id)
     {
