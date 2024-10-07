@@ -31,7 +31,7 @@ class PaymentController extends Controller
                 'amount' => $amount,
                 'currency' => 'usd',
                 'metadata' => [
-                    'user_id' => 1,
+                    'user_id' => $user->id,
                     'course_id' => $course->id,
                 ],
             ]);
@@ -47,16 +47,17 @@ class PaymentController extends Controller
     }
     public function storePayment(Request $request){
         $course = Course::findOrFail($request->course_id);
+        $user=Auth::user();
         if ($request->status == 'succeeded') {
             DB::beginTransaction();
             $payment = Payment::create([
-            'user_id' => $request->user_id,
+            'user_id' => $user->id,
             'course_id' => $request->course_id,
             'amount' => $request->amount,
             'payment_date' => now(),
         ]);
         $enrollment = Enrollment::create([
-            'user_id' => $request->user_id,
+            'user_id' => $user->id,
             'course_id' => $request->course_id,
         ]);
         DB::commit();
@@ -66,11 +67,13 @@ class PaymentController extends Controller
     }
 
     }
-    public function getPayments(Request $request)
+    public function getPayments()
     {
         $user = Auth::user();
         $payments = Payment::where('user_id', $user->id)->get();
-        return response()->json(['payments' => $payments]);
+        $courseIds = $payments->pluck('course_id')->toArray();
+        $courses = Course::whereIn('id', $courseIds)->get();
+        return $courses;
     }
     public function getAllPayments(Request $request){
         $payments = Payment::all();
