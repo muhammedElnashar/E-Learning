@@ -43,11 +43,8 @@ public function __construct()
         return response()->json([
             'test' => new TestResource($test),
             'questions' => $test->questions->map(function ($question) {
-                // Create an array to hold the answers
                 $answersArray = [];
-                $correctAnswer = null; // Variable to hold the correct answer
-
-                // Loop through the answers and index them
+                $correctAnswer = null; 
                 foreach ($question->answers as $index => $answer) {
                     $answersArray['answers' . ($index + 1)] = [
                         'id' => $answer->id,
@@ -55,17 +52,16 @@ public function __construct()
                         'is_correct' => $answer->is_correct,
                     ];
 
-                    // Store the correct answer if it exists
                     if ($answer->is_correct) {
-                        $correctAnswer = $answer->id; // You can store the whole answer object if needed
+                        $correctAnswer = $answer->id; 
                     }
                 }
 
                 return [
                         'question_text' => $question->question_text,
                         'question_id' => $question->id,
-                        'correct_answer' => str($correctAnswer), // Add the correct answer to the response
-                    ] + $answersArray; // Merge the question data with answers
+                        'correct_answer' => str($correctAnswer), 
+                    ] + $answersArray; 
             })
         ]);
 

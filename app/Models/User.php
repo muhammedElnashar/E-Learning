@@ -33,6 +33,10 @@ class User extends Authenticatable
         'title',
         'description',
     ];
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
     protected $dates = ['deleted_at'];
     /**
      * The attributes that should be hidden for serialization.
@@ -56,18 +60,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-        public function tests()
-        {
-            return $this->belongsToMany(Test::class, 'scores');
-        }
+    public function tests()
+    {
+        return $this->belongsToMany(Test::class, 'scores');
+    }
 
-        public function answers()
-        {
-            return $this->hasMany(UserAnswer::class);
-        }
+    public function answers()
+    {
+        return $this->hasMany(UserAnswer::class);
+    }
 
-        public function scores()
-        {
-            return $this->hasMany(Score::class);
-        }
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
+    }
 }

@@ -31,13 +31,13 @@ class PaymentController extends Controller
                 'amount' => $amount,
                 'currency' => 'usd',
                 'metadata' => [
-                    'user_id' => 1,
+                    'user_id' => $user->id,
                     'course_id' => $course->id,
                 ],
             ]);
 
             return response()->json([
-                'clientqSecret' => $paymentIntent->client_secret,
+                'clientSecret' => $paymentIntent->client_secret,
             ]);
 
         } catch (\Exception $e) {

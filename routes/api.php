@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\RegisterationController;
 use App\Http\Controllers\Api\PlaylistController;
 use App\Http\Controllers\Api\organizarController;
@@ -25,7 +26,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/students', RegisterationController::class);
     Route::post('/students/{id}/restore', [RegisterationController::class, 'restore']);
     Route::get('/students/trashed', [RegisterationController::class, 'trashed']);
-// Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [RegisterationController::class,'Logout']);
     //organizer and teacher
     Route::get('/teacher', [organizarController::class, 'getAllTeachers']);
@@ -50,8 +50,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/store-payment', [PaymentController::class, 'storePayment']);
     Route::get('/user-payments', [PaymentController::class, 'getPayments']);
     Route::get('/payments', [PaymentController::class, 'getAllPayments']);
-});
 
+//comment 
+Route::post('course/{course}', [CommentController::class, 'store']);
+Route::get('course/{course}/comments', [CommentController::class, 'index']);
+Route::delete('comment/{id}', [CommentController::class, 'destroy']);
+
+});
 
 
 
