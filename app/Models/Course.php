@@ -25,6 +25,10 @@ class Course extends Model
         'playlist_id',
         'thumbnail',
     ];
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
     public function payments()
     {
         return $this->hasMany(Payment::class);

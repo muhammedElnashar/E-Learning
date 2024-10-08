@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\RegisterationController;
 use App\Http\Controllers\Api\PlaylistController;
 use App\Http\Controllers\Api\organizarController;
@@ -54,9 +55,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('enrollments', [EnrollmentController::class, 'index']);
     Route::get('enrollments', [EnrollmentController::class, 'show']);
 
+
+//comment
+Route::post('course/{course}', [CommentController::class, 'store']);
+Route::get('course/{course}/comments', [CommentController::class, 'index']);
+Route::delete('comment/{id}', [CommentController::class, 'destroy']);
+
 });
-
-
 
 
 
