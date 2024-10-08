@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Payment;
+
 
 class Course extends Model
 {
@@ -23,6 +25,10 @@ class Course extends Model
         'playlist_id',
         'thumbnail',
     ];
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');

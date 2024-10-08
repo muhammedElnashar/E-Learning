@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\EnrollmentController;
 
 /*Route::get('/user', function (Request $request) {
     return $request->user();
@@ -24,8 +25,8 @@ Route::post('/login', [RegisterationController::class,'Login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/students', RegisterationController::class);
-    Route::post('/students/{id}/restore', [RegisterationController::class, 'restore']);
-    Route::get('/students/trashed', [RegisterationController::class, 'trashed']);
+    Route::post('/student/{id}/restore', [RegisterationController::class, 'restore']);
+    Route::get('/students-trashed', [RegisterationController::class, 'trashed']);
     Route::post('/logout', [RegisterationController::class,'Logout']);
     //organizer and teacher
     Route::get('/teacher', [organizarController::class, 'getAllTeachers']);
@@ -50,13 +51,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/store-payment', [PaymentController::class, 'storePayment']);
     Route::get('/user-payments', [PaymentController::class, 'getPayments']);
     Route::get('/payments', [PaymentController::class, 'getAllPayments']);
+    //enrollment
+    Route::get('enrollments', [EnrollmentController::class, 'index']);
+    Route::get('enrollments', [EnrollmentController::class, 'show']);
+
 
 //comment 
 Route::post('course/{course}', [CommentController::class, 'store']);
 Route::get('course/{course}/comments', [CommentController::class, 'index']);
 Route::delete('comment/{id}', [CommentController::class, 'destroy']);
-
+Route::get('user-score/{id}',[RegisterationController::class, 'getScore']);
 });
+
+
 
 
 

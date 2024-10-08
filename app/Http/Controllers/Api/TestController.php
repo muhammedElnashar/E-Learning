@@ -13,11 +13,10 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class TestController extends Controller
 {
-public function __construct()
-{
-    $this->middleware('auth:sanctum');
-    $this->middleware('isAdmin')->only('store', 'update', 'destroy','storeExamFile');
-}
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
 
     public function index()
     {
@@ -43,11 +42,9 @@ public function __construct()
         return response()->json([
             'test' => new TestResource($test),
             'questions' => $test->questions->map(function ($question) {
-                // Create an array to hold the answers
                 $answersArray = [];
-                $correctAnswer = null; // Variable to hold the correct answer
+                $correctAnswer = null;
 
-                // Loop through the answers and index them
                 foreach ($question->answers as $index => $answer) {
                     $answersArray['answers' . ($index + 1)] = [
                         'id' => $answer->id,
@@ -55,17 +52,16 @@ public function __construct()
                         'is_correct' => $answer->is_correct,
                     ];
 
-                    // Store the correct answer if it exists
                     if ($answer->is_correct) {
-                        $correctAnswer = $answer->id; // You can store the whole answer object if needed
+                        $correctAnswer = $answer->id;   
                     }
                 }
 
                 return [
-                        'question_text' => $question->question_text,
-                        'question_id' => $question->id,
-                        'correct_answer' => str($correctAnswer), // Add the correct answer to the response
-                    ] + $answersArray; // Merge the question data with answers
+                    'question_text' => $question->question_text,
+                    'question_id' => $question->id,
+                    'correct_answer' => str($correctAnswer),
+                ] + $answersArray;
             })
         ]);
 
@@ -93,11 +89,12 @@ public function __construct()
         $test->delete();
         return response()->json([
             'message' => 'Deleted  Successfully',
-        ],200);
+        ], 200);
     }
-    public function storeExamFile(Request $request){
+    public function storeExamFile(Request $request)
+    {
         $file = $request->file("excel_file");
-         Excel::import(new TestImport, $file, null, \Maatwebsite\Excel\Excel::CSV);
-         Excel::import(new ExamImport, $file, null, \Maatwebsite\Excel\Excel::CSV);
+        Excel::import(new TestImport, $file, null, \Maatwebsite\Excel\Excel::CSV);
+        Excel::import(new ExamImport, $file, null, \Maatwebsite\Excel\Excel::CSV);
     }
 }
