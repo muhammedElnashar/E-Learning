@@ -169,4 +169,25 @@ class   RegisterationController extends Controller
             'message' => 'Logged Out Successfully',
         ]);
     }
+    public function forgetPassword(Request $request){
+        $validator = Validator::make($request->all(), [
+            'email' => ['required', 'email', 'exists:users'],
+            'national_id' => ['required', 'digits:14', 'string', 'exists:users'],
+            'password' => ['required', 'min:8'],
+            'password_confirmation' => ['required', 'same:password'],
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'validation_errors' => $validator->errors(),
+                'message' => 'Failed to update',
+            ], 422);
+        }
+        $user = User::where('national_id', $request->national_id)->first();
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+        return response()->json([
+            'message' => 'Password has been updated successfully',
+        ]);
+    }
 }

@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\EnrollmentController;
 })->middleware('auth:sanctum');*/
 Route::post('/register', [RegisterationController::class,'Register']);
 Route::post('/login', [RegisterationController::class,'Login']);
+Route::post('/forget-password', [RegisterationController::class,'forgetPassword']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/students', RegisterationController::class);
