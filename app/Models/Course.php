@@ -33,4 +33,14 @@ class Course extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    public function instructor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'enrollments', 'course_id', 'user_id');
+    }
 }

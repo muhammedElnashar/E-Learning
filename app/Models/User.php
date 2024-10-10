@@ -81,4 +81,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Payment::class);
     }
+    public function course()
+    {
+        $this->belongsTo(Course::class);
+    }
+
 }

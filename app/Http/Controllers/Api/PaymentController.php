@@ -70,7 +70,7 @@ class PaymentController extends Controller
             'user_id' => $user->id,
             'course_id' => $request->course_id,
         ]);
-/*          Notification::send($admin,new AdminPayment($username,$userImage,$courseTitle,$created_at));*/
+          Notification::send($admin,new AdminPayment($username,$userImage,$courseTitle,$created_at));
         DB::commit();
         return response()->json(['message' => 'Payment successful and user enrolled.',
 /*            'notification' =>$admin->notifications*/

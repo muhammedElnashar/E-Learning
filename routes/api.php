@@ -20,8 +20,10 @@ use App\Http\Controllers\Api\EnrollmentController;
 })->middleware('auth:sanctum');*/
 Route::post('/register', [RegisterationController::class,'Register']);
 Route::post('/login', [RegisterationController::class,'Login']);
+Route::post('/forget-password', [RegisterationController::class,'forgetPassword']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('user-notifications',[RegisterationController::class,'getUserNotifications']);
     Route::apiResource('/students', RegisterationController::class);
     Route::post('/student/{id}/restore', [RegisterationController::class, 'restore']);
     Route::get('/students-trashed', [RegisterationController::class, 'trashed']);
@@ -60,9 +62,5 @@ Route::post('course/{course}', [CommentController::class, 'store']);
 Route::get('course/{course}/comments', [CommentController::class, 'index']);
 Route::delete('comment/{id}', [CommentController::class, 'destroy']);
 Route::get('user-score/{id}',[RegisterationController::class, 'getScore']);
+
 });
-
-
-
-
-

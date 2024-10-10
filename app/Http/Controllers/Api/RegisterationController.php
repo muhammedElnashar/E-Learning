@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -174,5 +175,30 @@ class   RegisterationController extends Controller
         return response()->json([
             'message' => 'Logged Out Successfully',
         ]);
+    }
+    public function forgetPassword(Request $request){
+        $validator = Validator::make($request->all(), [
+            'email' => ['required', 'email', 'exists:users'],
+            'national_id' => ['required', 'digits:14', 'string', 'exists:users'],
+            'password' => ['required', 'min:8'],
+            'password_confirmation' => ['required', 'same:password'],
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'validation_errors' => $validator->errors(),
+                'message' => 'Failed to update',
+            ], 422);
+        }
+        $user = User::where('national_id', $request->national_id)->first();
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+        return response()->json([
+            'message' => 'Password has been updated successfully',
+        ]);
+    }
+    public function getUserNotifications(Request $request){
+        $user = Auth::user();
+        return response()->json($user->fresh()->unreadNotifications);
     }
 }
