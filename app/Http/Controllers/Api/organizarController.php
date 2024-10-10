@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\Course;
+use App\Models\Enrollment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Response;
@@ -28,12 +29,18 @@ class organizarController extends Controller
         return UserResource::collection($teacher);
     }
     public function getTeacher($id){
-        $teacher=User::whereIn('role_id', [2])->whereNull('deleted_at')->where('id', $id)->get();
+        $teacher=User::whereIn('role_id', [2])->whereNull('deleted_at')->where('id', $id)->first();
         $courses=Course::where('instructor_id', $id)->get();
-
+        $courses->students=
+            $courses->map(
+            function($course)
+            {
+            return $course->students->count();
+            }
+        );
+        $teacher->courses=$courses;
         return[
-           'teacher'=> UserResource::collection($teacher),
-            'courses'=> $courses
+           'teacher'=> $teacher
         ];
     }
 
