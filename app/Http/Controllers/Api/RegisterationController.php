@@ -160,6 +160,7 @@ class   RegisterationController extends Controller
 
         return[
             'data' =>  new UserResource($user),
+            'notifications'=>$user->notifications,
             'massage'=>'Login Successfully ',
             'result'=>true,
             'token' => $token->plainTextToken,
