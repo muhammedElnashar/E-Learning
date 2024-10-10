@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Response;
 use Validator;
+
 
 class organizarController extends Controller
 {
@@ -27,9 +29,11 @@ class organizarController extends Controller
     }
     public function getTeacher($id){
         $teacher=User::whereIn('role_id', [2])->whereNull('deleted_at')->where('id', $id)->get();
-        // dd($teacher);
+        $courses=Course::where('instructor_id', $id)->get();
+
         return[
-           'teacher'=> UserResource::collection($teacher)
+           'teacher'=> UserResource::collection($teacher),
+            'courses'=> $courses
         ];
     }
 

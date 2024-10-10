@@ -33,4 +33,8 @@ class Course extends Model
     {
         return $this->hasMany(Payment::class);
     }
+    public function instructor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }
