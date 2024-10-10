@@ -27,6 +27,7 @@ class StoreTestRequest extends FormRequest
             'title' => [ 'required','string','min:5'],
             'description' => ['required','string',"min:5"],
             'is_free' => ['required','boolean'],
+            "excel_file" =>['required', 'file', 'mimes:csv'],
         ];
     }
     public function failedValidation(Validator $validator): array
@@ -50,6 +51,8 @@ class StoreTestRequest extends FormRequest
             'description.min' => 'Description must be at least 5 characters long',
             'title.string' => 'Title must be a string',
             'description.string' => 'Description must be a string',
+            "excel_file.required" => 'Excel file is required',
+            "excel_file.mimes" => 'Excel file must be in CSV format'
         ];
     }
 

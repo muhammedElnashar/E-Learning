@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -160,6 +161,7 @@ class   RegisterationController extends Controller
 
         return[
             'data' =>  new UserResource($user),
+            'notifications'=>$user->notifications,
             'massage'=>'Login Successfully ',
             'result'=>true,
             'token' => $token->plainTextToken,
@@ -194,5 +196,9 @@ class   RegisterationController extends Controller
         return response()->json([
             'message' => 'Password has been updated successfully',
         ]);
+    }
+    public function getUserNotifications(Request $request){
+        $user = Auth::user();
+        return response()->json($user->fresh()->unreadNotifications);
     }
 }
