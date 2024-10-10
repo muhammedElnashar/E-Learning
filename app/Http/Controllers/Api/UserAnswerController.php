@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserAnswerRequest;
+use App\Models\Test;
 use App\Models\UserAnswer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ class UserAnswerController extends Controller
         return UserAnswer::all();
     }
 
-    public function store(Request $request)
+    public function store(StoreUserAnswerRequest $request)
     {
         $data = $request->all();
         $data['user_id'] = Auth::id();

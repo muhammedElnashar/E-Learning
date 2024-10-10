@@ -4,13 +4,11 @@ use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\RegisterationController;
 use App\Http\Controllers\Api\PlaylistController;
 use App\Http\Controllers\Api\organizarController;
-use App\Models\Playlist;
 use App\Http\Controllers\Api\TestController;
 use App\Http\Controllers\Api\QuestionController;
 use App\Http\Controllers\Api\AnswerController;
 use App\Http\Controllers\Api\UserAnswerController;
 use App\Http\Controllers\Api\ScoreController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\CourseController;
@@ -37,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //test
     Route::post("/upload-exam", [TestController::class,'storeExamFile']);
     Route::apiResource('tests', TestController::class);
+    Route::get('tests-answer/{id}', [TestController::class,'ShowCorrectTestAnswer']);
     Route::apiResource('questions', QuestionController::class);
     Route::apiResource('answers', AnswerController::class);
     Route::apiResource('user-answers', UserAnswerController::class);
@@ -56,7 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('enrollments', [EnrollmentController::class, 'show']);
 
 
-//comment 
+//comment
 Route::post('course/{course}', [CommentController::class, 'store']);
 Route::get('course/{course}/comments', [CommentController::class, 'index']);
 Route::delete('comment/{id}', [CommentController::class, 'destroy']);
