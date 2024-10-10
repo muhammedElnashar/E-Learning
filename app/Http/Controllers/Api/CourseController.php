@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\Course;
+use App\Models\Enrollment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -63,9 +64,8 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = Course::find($id);
-//        $teacher= User::whereIn('role_id', [2])->whereNull('deleted_at')->where('id', [$course->instructor_id])->get();
-//        $course->teacherName = $teacher->name;
-
+        $enrollments = Enrollment::where('course_id', $id)->get();
+        $course->enrollments = $enrollments;
         if (!$course) {
             return response()->json(['message' => 'Course not found'], 404);
         }

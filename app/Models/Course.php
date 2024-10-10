@@ -25,12 +25,24 @@ class Course extends Model
         'playlist_id',
         'thumbnail',
     ];
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
     public function payments()
     {
         return $this->hasMany(Payment::class);
     }
-    public function comments()
+
+    public function instructor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->belongsTo(User::class);
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'enrollments', 'course_id', 'user_id');
     }
 }
