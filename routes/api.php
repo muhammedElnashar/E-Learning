@@ -14,13 +14,18 @@ use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\EnrollmentController;
-
+use App\Http\Controllers\Api\SubscriptionController;
+use App\Http\Controllers\Api\ContactController;
 /*Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');*/
 Route::post('/register', [RegisterationController::class,'Register']);
 Route::post('/login', [RegisterationController::class,'Login']);
 Route::post('/forget-password', [RegisterationController::class,'forgetPassword']);
+
+Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
+Route::post('/contact', [ContactController::class, 'sendContactMessage']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user-notifications',[RegisterationController::class,'getUserNotifications']);
