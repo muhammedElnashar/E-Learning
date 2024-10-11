@@ -51,9 +51,8 @@ class AdminPayment extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'username' => $this->username,
+            'message' => "$this->username Enroll in Course $this->courseTitle ",
             'userImage' => $this->userImage,
-            'courseTitle' => $this->courseTitle,
             'created_at' => $this->created_at,
         ];
     }

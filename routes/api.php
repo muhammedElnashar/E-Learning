@@ -24,6 +24,7 @@ Route::post('/forget-password', [RegisterationController::class,'forgetPassword'
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user-notifications',[RegisterationController::class,'getUserNotifications']);
+    Route::post('read-notifications',[RegisterationController::class,'readUserNotifications']);
     Route::apiResource('/students', RegisterationController::class);
     Route::post('/student/{id}/restore', [RegisterationController::class, 'restore']);
     Route::get('/students-trashed', [RegisterationController::class, 'trashed']);

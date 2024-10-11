@@ -199,6 +199,23 @@ class   RegisterationController extends Controller
     }
     public function getUserNotifications(Request $request){
         $user = Auth::user();
-        return response()->json($user->fresh()->unreadNotifications);
+        return response()->json([
+            "Notifications" => $user->fresh()->Notifications,
+            "unReadNotificationsCount" => count($user->unreadNotifications),
+
+            ],201);
+    }
+    public function readUserNotifications(){
+        if (isset(\request()->all()['id'])){
+            $id=\request()->all()['id'];
+            $readable= Auth::user()->notifications;
+            foreach ($readable as $read){
+                if($read->id == $id){
+                    $read->markAsRead();
+                }
+            }
+        }
+
+        return response()->json('success',201);
     }
 }
