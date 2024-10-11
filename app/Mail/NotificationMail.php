@@ -11,11 +11,11 @@ use Illuminate\Queue\SerializesModels;
 class NotificationMail extends Mailable
 {
 use Queueable, SerializesModels;
-public $data;
+public $details;
 
-public function __construct($data)
+public function __construct($details)
 {
-$this->data = $data;
+$this->details = $details;
 }
 
 public function envelope(): Envelope
@@ -31,6 +31,11 @@ return new Content(
 view: 'emails.notification',
 );
 }
+    public function build()
+    {
+        return $this->view('emails.notification')
+            ->with('details', $this->details);
+    }
 
 public function attachments(): array
 {

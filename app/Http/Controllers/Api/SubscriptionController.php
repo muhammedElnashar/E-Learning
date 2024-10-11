@@ -16,19 +16,19 @@ class SubscriptionController extends Controller
         $validated = $request->validate([
             'email' => 'required|email|unique:subscribers,email',
         ]);
+        $email = $request->input('email');
 
-        // Save the email to the subscribers table
         Subscriber::create([
             'email' => $validated['email'],
         ]);
 
-        // Send notification mail
         $details = [
-            'email' => $validated['email'],
-            'message' => 'Thank you for subscribing to our newsletter!'
+            'title' => 'Subscription Successful',
+            'body' => 'Thank you for subscribing to our newsletter!'
         ];
 
-        Mail::to($validated['email'])->send(new NotificationMail($details));
+
+        Mail::to($email)->send(new NotificationMail($details));
 
         return response()->json(['message' => 'Subscription successful']);
     }
