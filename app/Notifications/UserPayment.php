@@ -14,9 +14,13 @@ class UserPayment extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($username ,$userImage,$courseTitle,$created_at)
     {
-        //
+        $this->username = $username;
+        $this->userImage = $userImage;
+        $this->courseTitle = $courseTitle;
+        $this->created_at = $created_at;
+
     }
 
     /**
@@ -26,7 +30,7 @@ class UserPayment extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -48,7 +52,9 @@ class UserPayment extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
-        ];
+            "message" => "Congrats $this->username enroll in $this->courseTitle ",
+            "userImage"=>  $this->userImage,
+            "created_at" => $this->created_at,
+            ];
     }
 }
