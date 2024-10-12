@@ -30,6 +30,8 @@ Route::post('/contact', [ContactController::class, 'sendContactMessage']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('user-notifications',[RegisterationController::class,'getUserNotifications']);
+    Route::post('read-notifications',[RegisterationController::class,'readUserNotifications']);
     Route::apiResource('/students', RegisterationController::class);
     Route::post('/student/{id}/restore', [RegisterationController::class, 'restore']);
     Route::get('/students-trashed', [RegisterationController::class, 'trashed']);
@@ -43,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //test
     Route::post("/upload-exam", [TestController::class,'storeExamFile']);
     Route::apiResource('tests', TestController::class);
+    Route::get('tests-answer/{id}', [TestController::class,'ShowCorrectTestAnswer']);
     Route::apiResource('questions', QuestionController::class);
     Route::apiResource('answers', AnswerController::class);
     Route::apiResource('user-answers', UserAnswerController::class);
@@ -66,6 +69,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('course/{course}', [CommentController::class, 'store']);
 Route::get('course/{course}/comments', [CommentController::class, 'index']);
 Route::delete('comment/{id}', [CommentController::class, 'destroy']);
+Route::get('user-score/{id}',[RegisterationController::class, 'getScore']);
 
 });
 

@@ -15,7 +15,7 @@ class UserAnswerController extends Controller
         return UserAnswer::all();
     }
 
-    public function store(Request $request)
+    public function store(StoreUserAnswerRequest $request)
     {
         $data = $request->all();
         $data['user_id'] = Auth::id();

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -127,7 +128,12 @@ class   RegisterationController extends Controller
         ]);
     }
 
+    public function getScore($id){
+        $student = User::find($id);
+        $score = $student->scores;
+        return response()->json($score, 200);
 
+    }
 
     public function Login(Request $request)
     {
@@ -155,6 +161,7 @@ class   RegisterationController extends Controller
 
         return[
             'data' =>  new UserResource($user),
+            'notifications'=>$user->notifications,
             'massage'=>'Login Successfully ',
             'result'=>true,
             'token' => $token->plainTextToken,
@@ -189,5 +196,26 @@ class   RegisterationController extends Controller
         return response()->json([
             'message' => 'Password has been updated successfully',
         ]);
+    }
+    public function getUserNotifications(Request $request){
+        $user = Auth::user();
+        return response()->json([
+            "Notifications" => $user->fresh()->Notifications,
+            "unReadNotificationsCount" => count($user->unreadNotifications),
+
+            ],201);
+    }
+    public function readUserNotifications(){
+        if (isset(\request()->all()['id'])){
+            $id=\request()->all()['id'];
+            $readable= Auth::user()->notifications;
+            foreach ($readable as $read){
+                if($read->id == $id){
+                    $read->markAsRead();
+                }
+            }
+        }
+
+        return response()->json('success',201);
     }
 }

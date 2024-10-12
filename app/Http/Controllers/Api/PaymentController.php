@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\AdminPayment;
+use App\Notifications\UserPayment;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
@@ -12,6 +14,8 @@ use App\Models\Course;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
+
 
 class PaymentController extends Controller
 {
@@ -20,13 +24,10 @@ class PaymentController extends Controller
         $request->validate([
             'course_id' => 'required|exists:courses,id',
         ]);
-
         $user = Auth::user();
         $course = Course::findOrFail($request->course_id);
         $amount = $course->price * 100;
-
         Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-
         try {
             $paymentIntent = PaymentIntent::create([
                 'amount' => $amount,
@@ -61,8 +62,17 @@ class PaymentController extends Controller
             'user_id' => $user->id,
             'course_id' => $request->course_id,
         ]);
+            $admin = User::where('role_id', 1)->first();
+            $username = $user->name;
+            $userImage = $user->image;
+            $courseTitle = $course->title;
+            $created_at= $payment->created_at;
+          Notification::send($admin,new AdminPayment($username,$userImage,$courseTitle,$created_at));
+          Notification::send($user,new UserPayment($username,$userImage,$courseTitle,$created_at));
+
         DB::commit();
-        return response()->json(['message' => 'Payment successful and user enrolled.'], 200);
+        return response()->json(['message' => 'Payment successful and user enrolled.',
+            ], 200);
     }else{
         return response()->json(['error' => 'Payment failed.'], 400);
     }

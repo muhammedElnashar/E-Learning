@@ -72,10 +72,11 @@ class User extends Authenticatable
         return $this->hasMany(UserAnswer::class);
     }
 
-        public function scores()
-        {
-            return $this->hasMany(Score::class);
-        }
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
+    }
+       
     public function payments()
     {
         return $this->hasMany(Payment::class);
