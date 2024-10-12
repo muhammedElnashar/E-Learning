@@ -26,7 +26,7 @@ Route::post('/login', [RegisterationController::class,'Login']);
 Route::post('/forget-password', [RegisterationController::class,'forgetPassword']);
 
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
-Route::post('/contact', [ContactController::class, 'sendContactMessage']);
+Route::get('/contact', [ContactController::class, 'sendContactMessage']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
