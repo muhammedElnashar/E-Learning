@@ -72,6 +72,3 @@ Route::delete('comment/{id}', [CommentController::class, 'destroy']);
 Route::get('user-score/{id}',[RegisterationController::class, 'getScore']);
 
 });
-
-
-
