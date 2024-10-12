@@ -27,7 +27,8 @@ class TestController extends Controller
 
         return [
             'data' => $tests->map(function ($test) {
-                $score = $test->scores->first();
+
+                $score = $test->scores->where('user_id', '=', Auth::id())->first();
                 return [
                     'test' => new TestResource($test),
                     'score' => $score ? [

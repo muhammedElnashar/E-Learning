@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Notifications\AdminPayment;
+use App\Notifications\UserPayment;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
@@ -52,11 +53,7 @@ class PaymentController extends Controller
         $course = Course::find($request->course_id);
         $user=Auth::user();
         //Notification Data
-        $admin = User::where('role_id', 1)->first();
-            $username = $user->name;
-            $userImage = $user->image;
-            $courseTitle = $course->title;
-            $created_at= $course->created_at;
+
         if ($request->status == 'succeeded') {
             DB::beginTransaction();
 
@@ -70,10 +67,16 @@ class PaymentController extends Controller
             'user_id' => $user->id,
             'course_id' => $request->course_id,
         ]);
+            $admin = User::where('role_id', 1)->first();
+            $username = $user->name;
+            $userImage = $user->image;
+            $courseTitle = $course->title;
+            $created_at= $payment->created_at;
           Notification::send($admin,new AdminPayment($username,$userImage,$courseTitle,$created_at));
+          Notification::send($user,new UserPayment($username,$userImage,$courseTitle,$created_at));
+
         DB::commit();
         return response()->json(['message' => 'Payment successful and user enrolled.',
-/*            'notification' =>$admin->notifications*/
             ], 200);
     }else{
         return response()->json(['error' => 'Payment failed.'], 400);

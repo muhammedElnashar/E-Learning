@@ -29,6 +29,7 @@ Route::post('/contact', [ContactController::class, 'sendContactMessage']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user-notifications',[RegisterationController::class,'getUserNotifications']);
+    Route::post('read-notifications',[RegisterationController::class,'readUserNotifications']);
     Route::apiResource('/students', RegisterationController::class);
     Route::post('/student/{id}/restore', [RegisterationController::class, 'restore']);
     Route::get('/students-trashed', [RegisterationController::class, 'trashed']);
