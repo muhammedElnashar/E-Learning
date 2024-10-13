@@ -58,29 +58,29 @@ class PaymentController extends Controller
             DB::beginTransaction();
 
             $payment = Payment::create([
-            'user_id' => $user->id,
-            'course_id' => $request->course_id,
-            'amount' => $request->amount,
-            'payment_date' => now(),
-        ]);
-        $enrollment = Enrollment::create([
-            'user_id' => $user->id,
-            'course_id' => $request->course_id,
-        ]);
+                'user_id' => $user->id,
+                'course_id' => $request->course_id,
+                'amount' => $request->amount,
+                'payment_date' => now(),
+            ]);
+            $enrollment = Enrollment::create([
+                'user_id' => $user->id,
+                'course_id' => $request->course_id,
+            ]);
             $admin = User::where('role_id', 1)->first();
             $username = $user->name;
             $userImage = $user->image;
             $courseTitle = $course->title;
             $created_at= $payment->created_at;
-          Notification::send($admin,new AdminPayment($username,$userImage,$courseTitle,$created_at));
-          Notification::send($user,new UserPayment($username,$userImage,$courseTitle,$created_at));
+            Notification::send($admin,new AdminPayment($username,$userImage,$courseTitle,$created_at));
+            Notification::send($user,new UserPayment($username,$userImage,$courseTitle,$created_at));
 
-        DB::commit();
-        return response()->json(['message' => 'Payment successful and user enrolled.',
+            DB::commit();
+            return response()->json(['message' => 'Payment successful and user enrolled.',
             ], 200);
-    }else{
-        return response()->json(['error' => 'Payment failed.'], 400);
-    }
+        }else{
+            return response()->json(['error' => 'Payment failed.'], 400);
+        }
 
     }
     public function getPayments()
