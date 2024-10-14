@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class CourseController extends Controller
@@ -55,7 +57,27 @@ class CourseController extends Controller
             'thumbnail'=>$request->thumbnail
         ]);
 
-        return response()->json($course, 201);
+        $subscribers = Subscription::all();
+        foreach ($subscribers as $subscriber) {
+            Mail::raw("
+A new course titled '{$course->title}' has been added,
+
+            Only for {$course->price}$,
+            Would You Like to enroll!
+
+Best Regards,
+Ana-Kafou Team
+
+            ", function ($message) use ($subscriber) {
+
+
+                $message->to($subscriber->email)
+                    ->subject('Ana-Kafou Added New Course');
+            });
+        }
+
+        return response()->json([$course,'message' => 'Course created and subscribers notified!'], 201);
+
     }
 
     /**
