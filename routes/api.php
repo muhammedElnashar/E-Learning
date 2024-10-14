@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\TestController;
 use App\Http\Controllers\Api\UserAnswerController;
 use App\Http\Controllers\Api\VideoController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\InquiryController;
 
 /*Route::get('/user', function (Request $request) {
     return $request->user();
@@ -65,8 +66,11 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 Route::apiResource('/courses', CourseController::class);
 Route::get('/teacher', [organizarController::class, 'getAllTeachers']);
+//Mail Routes
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
 Route::post('/unsubscribe', [SubscriptionController::class, 'unsubscribe']);
+Route::post('/contact', [InquiryController::class, 'sendInquiry']);
+
 
 
 
