@@ -24,6 +24,10 @@ class Course extends Model
         'instructor_id',
         'playlist_id',
         'thumbnail',
+        'course_type',
+        'live_platform',
+        'live_link',
+        'live_schedule'
     ];
     public function payments()
     {

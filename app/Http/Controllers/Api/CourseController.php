@@ -9,6 +9,7 @@ use App\Models\Enrollment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -35,15 +36,20 @@ class CourseController extends Controller
             'is_free' => 'required|boolean',
             'instructor_id' => 'required|exists:users,id',
             'playlist_id' => 'required|exists:playlists,id',
+            'course_type' => 'required|in:video,live',
+            'live_platform' => 'required_if:course_type,live|string|max:255',
+            'live_link' => 'required_if:course_type,live|url',
+            'live_schedule' => 'required_if:course_type,live|date',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        $instructor = User::find($request->instructor_id);
-        if ($instructor->role_id != 2) {
-            return response()->json(['message' => 'You do not have permission to create courses.'], 403);
-        }
+        $user=Auth::user();
+        // dd($user);
+        // if ($user->role_id != 4||$user->role_id != 1) {
+        //     return response()->json(['error' => 'You are not authorized to create courses.'], 403);
+        // }
 
         $course = Course::create([
             'title' => $request->title,
@@ -52,7 +58,11 @@ class CourseController extends Controller
             'is_free' => $request->is_free,
             'instructor_id' => $request->instructor_id,
             'playlist_id' => $request->playlist_id,
-            'thumbnail'=>$request->thumbnail
+            'thumbnail'=>$request->thumbnail,
+            'course_type' => $request->course_type,
+            'live_platform' => $request->live_platform,
+            'live_link' => $request->live_link,
+            'live_schedule' => $request->live_schedule,
         ]);
 
         return response()->json($course, 201);
