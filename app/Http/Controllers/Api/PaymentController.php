@@ -37,8 +37,6 @@ class PaymentController extends Controller
                     'course_id' => $course->id,
                 ],
             ]);
-
-
             return response()->json([
                 'clientSecret' => $paymentIntent->client_secret,
             ]);
@@ -50,13 +48,10 @@ class PaymentController extends Controller
         }
     }
     public function storePayment(Request $request){
-        $course = Course::find($request->course_id);
+        $course = Course::findOrFail($request->course_id);
         $user=Auth::user();
-        //Notification Data
-
         if ($request->status == 'succeeded') {
             DB::beginTransaction();
-
             $payment = Payment::create([
             'user_id' => $user->id,
             'course_id' => $request->course_id,

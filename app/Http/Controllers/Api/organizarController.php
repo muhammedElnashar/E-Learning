@@ -31,17 +31,16 @@ class organizarController extends Controller
     public function getTeacher($id){
         $teacher=User::whereIn('role_id', [2])->whereNull('deleted_at')->where('id', $id)->first();
         $courses=Course::where('instructor_id', $id)->get();
+        $courses->students=
+            $courses->map(
+            function($course)
+            {
+            return $course->students->count();
+            }
+        );
         $teacher->courses=$courses;
         return[
-           'teacher'=> new UserResource($teacher),
-            "courses_count"=> count($courses),
-            "courses"=> $courses->map(function($course){
-                return [
-                    $course,
-                'Student_count'=> count($course->students),
-                ];
-            })
-
+           'teacher'=> $teacher
         ];
     }
 

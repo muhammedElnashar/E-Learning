@@ -4,11 +4,13 @@ use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\RegisterationController;
 use App\Http\Controllers\Api\PlaylistController;
 use App\Http\Controllers\Api\organizarController;
+use App\Models\Playlist;
 use App\Http\Controllers\Api\TestController;
 use App\Http\Controllers\Api\QuestionController;
 use App\Http\Controllers\Api\AnswerController;
 use App\Http\Controllers\Api\UserAnswerController;
 use App\Http\Controllers\Api\ScoreController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\CourseController;
@@ -24,7 +26,7 @@ Route::post('/login', [RegisterationController::class,'Login']);
 Route::post('/forget-password', [RegisterationController::class,'forgetPassword']);
 
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
-Route::post('/contact', [ContactController::class, 'sendContactMessage']);
+Route::get('/contact', [ContactController::class, 'sendContactMessage']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
