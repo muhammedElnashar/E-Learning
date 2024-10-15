@@ -16,7 +16,6 @@ use App\Http\Controllers\Api\UserAnswerController;
 use App\Http\Controllers\Api\VideoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\InquiryController;
-
 /*Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');*/
@@ -32,13 +31,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/students-trashed', [RegisterationController::class, 'trashed']);
     Route::post('/logout', [RegisterationController::class, 'Logout']);
     //organizer and teacher
-    Route::get('/teacher/{id}', [organizarController::class, 'getTeacher']);
     Route::apiResource('/organizar', organizarController::class);
     Route::post('/organizar/{id}/restore', [organizarController::class, 'restore']);
     Route::get('/organizartrashed', [organizarController::class, 'trashed']);
     //test
-    Route::post("/upload-exam", [TestController::class, 'storeExamFile']);
-    Route::get('tests-answer/{id}', [TestController::class, 'ShowCorrectTestAnswer']);
+    Route::post("/upload-exam", [TestController::class,'storeExamFile']);
+    Route::apiResource('tests', TestController::class);
+    Route::get('tests-answer/{id}', [TestController::class,'ShowCorrectTestAnswer']);
     Route::apiResource('questions', QuestionController::class);
     Route::apiResource('answers', AnswerController::class);
     Route::apiResource('user-answers', UserAnswerController::class);
@@ -47,7 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('playlists', PlaylistController::class);
     Route::apiResource('videos', VideoController::class);
 
-//payment
+    //payment
     Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent']);
     Route::post('/store-payment', [PaymentController::class, 'storePayment']);
     Route::get('/user-payments', [PaymentController::class, 'getPayments']);
@@ -66,6 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 Route::apiResource('/courses', CourseController::class);
 Route::get('/teacher', [organizarController::class, 'getAllTeachers']);
+Route::get('/teacher/{id}', [organizarController::class, 'getTeacher']);
 //Mail Routes
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
 Route::post('/unsubscribe', [SubscriptionController::class, 'unsubscribe']);
@@ -83,4 +83,3 @@ Route::post('/contact', [InquiryController::class, 'sendInquiry']);
 //
 //    return 'Test email sent!';
 //});
-
