@@ -37,8 +37,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/students-trashed', [RegisterationController::class, 'trashed']);
     Route::post('/logout', [RegisterationController::class,'Logout']);
     //organizer and teacher
-    Route::get('/teacher', [organizarController::class, 'getAllTeachers']);
-    Route::get('/teacher/{id}', [organizarController::class, 'getTeacher']);
     Route::apiResource('/organizar', organizarController::class);
     Route::post('/organizar/{id}/restore', [organizarController::class, 'restore']);
     Route::get('/organizartrashed', [organizarController::class, 'trashed']);
@@ -51,11 +49,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('user-answers', UserAnswerController::class);
     Route::apiResource('scores', ScoreController::class);
     //Course
-    Route::apiResource('/courses', CourseController::class);
     Route::apiResource('playlists', PlaylistController::class);
     Route::apiResource('videos', VideoController::class);
-
-//payment
+    
+    //payment
     Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent']);
     Route::post('/store-payment', [PaymentController::class, 'storePayment']);
     Route::get('/user-payments', [PaymentController::class, 'getPayments']);
@@ -63,12 +60,15 @@ Route::middleware('auth:sanctum')->group(function () {
     //enrollment
     Route::get('enrollments', [EnrollmentController::class, 'index']);
     Route::get('enrollments', [EnrollmentController::class, 'show']);
-
-
-//comment
-Route::post('course/{course}', [CommentController::class, 'store']);
-Route::get('course/{course}/comments', [CommentController::class, 'index']);
-Route::delete('comment/{id}', [CommentController::class, 'destroy']);
-Route::get('user-score/{id}',[RegisterationController::class, 'getScore']);
-
+    
+    
+    //comment
+    Route::post('course/{course}', [CommentController::class, 'store']);
+    Route::get('course/{course}/comments', [CommentController::class, 'index']);
+    Route::delete('comment/{id}', [CommentController::class, 'destroy']);
+    Route::get('user-score/{id}',[RegisterationController::class, 'getScore']);
+    
 });
+Route::apiResource('/courses', CourseController::class);
+Route::get('/teacher', [organizarController::class, 'getAllTeachers']);
+Route::get('/teacher/{id}', [organizarController::class, 'getTeacher']);
