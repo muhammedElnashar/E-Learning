@@ -35,7 +35,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/students-trashed', [RegisterationController::class, 'trashed']);
     Route::post('/logout', [RegisterationController::class,'Logout']);
     //organizer and teacher
-    Route::get('/teacher/{id}', [organizarController::class, 'getTeacher']);
     Route::apiResource('/organizar', organizarController::class);
     Route::post('/organizar/{id}/restore', [organizarController::class, 'restore']);
     Route::get('/organizartrashed', [organizarController::class, 'trashed']);
@@ -70,3 +69,4 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 Route::apiResource('/courses', CourseController::class);
 Route::get('/teacher', [organizarController::class, 'getAllTeachers']);
+Route::get('/teacher/{id}', [organizarController::class, 'getTeacher']);
