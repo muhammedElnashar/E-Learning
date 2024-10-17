@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Payment;
-
 
 class Course extends Model
 {
@@ -24,17 +22,23 @@ class Course extends Model
         'instructor_id',
         'playlist_id',
         'thumbnail',
+        'course_type',
+        'live_platform',
+        'live_link',
+        'live_schedule',
+        'live_details',
     ];
+
     public function payments()
     {
         return $this->hasMany(Payment::class);
     }
+
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
-
-    public function instructor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function instructor()
     {
         return $this->belongsTo(User::class);
     }
