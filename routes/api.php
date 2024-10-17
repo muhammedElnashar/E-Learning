@@ -71,9 +71,6 @@ Route::post('/unsubscribe', [SubscriptionController::class, 'unsubscribe']);
 Route::post('/contact', [InquiryController::class, 'sendInquiry']);
 
 
-
-
-
 //Route::get('/test-email', function () {
 //    \Illuminate\Support\Facades\Mail::raw('This is a test email from Mailgun', function ($message) {
 //        $message->to('omarabuelkhier@gmail.com')  // Change to your recipient email
