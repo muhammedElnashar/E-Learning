@@ -33,17 +33,18 @@ class organizarController extends Controller
         $courses=Course::where('instructor_id', $id)->get();
         $teacher->courses=$courses;
         return[
-           'teacher'=> new UserResource($teacher),
+            'teacher'=> new UserResource($teacher),
             "courses_count"=> count($courses),
             "courses"=> $courses->map(function($course){
                 return [
                     $course,
-                'Student_count'=> count($course->students),
+                    'Student_count'=> count($course->students),
                 ];
             })
 
         ];
     }
+
 
     /**
      * Show the form for creating a new resource.

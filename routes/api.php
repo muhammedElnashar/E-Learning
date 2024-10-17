@@ -7,14 +7,13 @@ use App\Http\Controllers\Api\EnrollmentController;
 use App\Http\Controllers\Api\organizarController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PlaylistController;
+use App\Http\Controllers\Api\TestController;
 use App\Http\Controllers\Api\QuestionController;
 use App\Http\Controllers\Api\RegisterationController;
 use App\Http\Controllers\Api\ScoreController;
 use App\Http\Controllers\Api\SubscriptionController;
-use App\Http\Controllers\Api\TestController;
 use App\Http\Controllers\Api\UserAnswerController;
 use App\Http\Controllers\Api\VideoController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\InquiryController;
 /*Route::get('/user', function (Request $request) {
     return $request->user();

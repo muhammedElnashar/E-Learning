@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Answer;
 use App\Models\Question;
 use App\Models\Test;
 use Maatwebsite\Excel\Concerns\ToModel;

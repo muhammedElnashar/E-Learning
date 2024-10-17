@@ -11,7 +11,7 @@ class ExamImport implements ToCollection
 {
     public function collection(Collection $rows)
     {
-        $test = Test::where('deleted_at', null)->latest('created_at')->first();
+        $test=Test::Where('deleted_at',null)->latest('created_at')->first();
 
         foreach ($rows as $index => $row) {
             $i = $index + 1;

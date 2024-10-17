@@ -3,26 +3,30 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Mail\NotificationMail;
+use Illuminate\Mail\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 class ContactController extends Controller
 {
-    public function sendContactMessage(Request $request)
+    public function sendContactMessage()
     {
 //        $validated = $request->validate([
 //            'email' => 'required|email',
 //            'message' => 'required',
 //        ]);
         // Send an email with the user's message
-        $details = [
-            'title' => 'New Contact Message',
-            'body' => $request->message
-        ];
+//        $details = [
+//            'title' => 'New Contact Message',
+//            'body' => $request->message
+//        ];
 
-        Mail::to('omarabuelkhier.com')->send(new NotificationMail($details));
+        Mail::raw('Hello Everyone', function(Message $message) {
+            dd($message);
+            $message->to('omarabuelkhier@gmail.com')
+                ->subject('Hello Everyone')
+                ->from('omarabuelkhier@gmail.com');
+            return 'Message sent successfully';
 
-
-        return response()->json(['message' => 'Message sent successfully']);
+        });
     }
 }

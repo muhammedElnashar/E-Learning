@@ -16,10 +16,11 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class TestController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-    }
+public function __construct()
+{
+    $this->middleware('auth:sanctum');
+    $this->middleware('isAdmin')->only('store', 'update', 'destroy','storeExamFile');
+}
 
     public function index()
     {
