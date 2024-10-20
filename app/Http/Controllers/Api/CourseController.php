@@ -55,7 +55,7 @@ class CourseController extends Controller
             'price' => $request->is_free ? 0 : $request->price,
             'is_free' => $request->is_free,
             'instructor_id' => $request->instructor_id,
-            'playlist_id' => $request->playlist_id ?? null, 
+            'playlist_id' => $request->playlist_id ?? null,
             'thumbnail' => $request->thumbnail ?? 'https://campustechnology.com/-/media/EDU/CampusTechnology/2019-Images/20191209online.jpg',
             'course_type' => $request->course_type,
             'live_platform' => $request->live_platform ?? null,
@@ -122,4 +122,16 @@ class CourseController extends Controller
 
         return response()->json(['message' => 'Course deleted successfully'], 200);
     }
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $courses = Course::query()
+            ->where('title', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('price', $keyword)
+            ->get();
+
+        return response()->json($courses);
+    }
+
+
 }

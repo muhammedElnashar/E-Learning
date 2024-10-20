@@ -51,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //Course
     Route::apiResource('playlists', PlaylistController::class);
     Route::apiResource('videos', VideoController::class);
-    
+
     //payment
     Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent']);
     Route::post('/store-payment', [PaymentController::class, 'storePayment']);
@@ -60,15 +60,16 @@ Route::middleware('auth:sanctum')->group(function () {
     //enrollment
     Route::get('enrollments', [EnrollmentController::class, 'index']);
     Route::get('enrollments', [EnrollmentController::class, 'show']);
-    
-    
+
+
     //comment
     Route::post('course/{course}', [CommentController::class, 'store']);
     Route::get('course/{course}/comments', [CommentController::class, 'index']);
     Route::delete('comment/{id}', [CommentController::class, 'destroy']);
     Route::get('user-score/{id}',[RegisterationController::class, 'getScore']);
-    
+
 });
 Route::apiResource('/courses', CourseController::class);
 Route::get('/teacher', [organizarController::class, 'getAllTeachers']);
 Route::get('/teacher/{id}', [organizarController::class, 'getTeacher']);
+Route::get('/search', [CourseController::class, 'search']);
