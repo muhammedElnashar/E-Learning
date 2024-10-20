@@ -27,6 +27,7 @@ class Course extends Model
         'live_link',
         'live_schedule',
         'live_details',
+        'category_id'
     ];
 
     public function payments()

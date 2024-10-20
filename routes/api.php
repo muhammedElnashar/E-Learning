@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\Api\AnswerController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\CourseController;
@@ -15,14 +14,14 @@ use App\Http\Controllers\Api\SubscriptionController;
 use App\Http\Controllers\Api\UserAnswerController;
 use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\InquiryController;
-/*Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');*/
+use App\Http\Controllers\Api\CategoryController;
+
 Route::post('/register', [RegisterationController::class, 'Register']);
 Route::post('/login', [RegisterationController::class, 'Login']);
 Route::post('/forget-password', [RegisterationController::class, 'forgetPassword']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function ()
+{
     Route::get('user-notifications', [RegisterationController::class, 'getUserNotifications']);
     Route::post('read-notifications', [RegisterationController::class, 'readUserNotifications']);
     Route::apiResource('/students', RegisterationController::class);
@@ -44,7 +43,8 @@ Route::middleware('auth:sanctum')->group(function () {
     //Course
     Route::apiResource('playlists', PlaylistController::class);
     Route::apiResource('videos', VideoController::class);
-
+    //Category
+    Route::apiResource('categories',CategoryController::class);
     //payment
     Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent']);
     Route::post('/store-payment', [PaymentController::class, 'storePayment']);
@@ -53,14 +53,11 @@ Route::middleware('auth:sanctum')->group(function () {
     //enrollment
     Route::get('enrollments', [EnrollmentController::class, 'index']);
     Route::get('enrollments', [EnrollmentController::class, 'show']);
-
-
-//comment
+    //comment
     Route::post('course/{course}', [CommentController::class, 'store']);
     Route::get('course/{course}/comments', [CommentController::class, 'index']);
     Route::delete('comment/{id}', [CommentController::class, 'destroy']);
     Route::get('user-score/{id}', [RegisterationController::class, 'getScore']);
-
 });
 Route::apiResource('/courses', CourseController::class);
 Route::get('/teacher', [organizarController::class, 'getAllTeachers']);
@@ -69,13 +66,3 @@ Route::get('/teacher/{id}', [organizarController::class, 'getTeacher']);
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
 Route::post('/unsubscribe', [SubscriptionController::class, 'unsubscribe']);
 Route::post('/contact', [InquiryController::class, 'sendInquiry']);
-
-
-//Route::get('/test-email', function () {
-//    \Illuminate\Support\Facades\Mail::raw('This is a test email from Mailgun', function ($message) {
-//        $message->to('omarabuelkhier@gmail.com')  // Change to your recipient email
-//        ->subject('Test Email');
-//    });
-//
-//    return 'Test email sent!';
-//});
