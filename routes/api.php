@@ -18,6 +18,8 @@ use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\EnrollmentController;
 use App\Http\Controllers\Api\SubscriptionController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\CourseRatingController;
+use App\Http\Controllers\Api\TeacherRatingController;
 /*Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');*/
@@ -67,6 +69,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('course/{course}/comments', [CommentController::class, 'index']);
     Route::delete('comment/{id}', [CommentController::class, 'destroy']);
     Route::get('user-score/{id}',[RegisterationController::class, 'getScore']);
+
+    //rating courses
+    Route::post('course/{course}/rate', [CourseRatingController::class, 'store']);
+    Route::get('course/{course}/ratings', [CourseRatingController::class, 'index']);
+    //rating teachers
+    Route::post('teacher/{teacher}/rate', [TeacherRatingController::class, 'store']);
+    Route::get('teacher/{teacher}/ratings', [TeacherRatingController::class, 'index']);
     
 });
 Route::apiResource('/courses', CourseController::class);
