@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->longText('description');
-            $table->string('thumbnail');
+            $table->string('thumbnail')->nullable();
             $table->string('video_id');
             $table->foreignId('playlist_id');
             $table->foreign('playlist_id')->references('id')->on('playlists')->onDelete('cascade')->onUpdate('cascade');

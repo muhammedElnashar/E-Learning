@@ -22,16 +22,16 @@ class FetchYouTubePlaylists extends Command
     public function handle()
     {
         $channelId = 'UC_x5XG1OV2P6uZZ5FSM9Ttw';
-
         $playlists = $this->youtubeService->getPlaylists($channelId);
-
         foreach ($playlists as $playlistData) {
             $playlist = PlayList::updateOrCreate(
-                ['playlist_id' => $playlistData['id']],
                 [
+                    'playlist_id' => $playlistData['id'],
                     'title' => $playlistData['snippet']['title'],
                     'description' => $playlistData['snippet']['description'],
-                    'thumbnail' => $playlistData['snippet']['thumbnails']['high']['url'],
+                    'thumbnail' => isset($playlistData['snippet']['thumbnails']['maxres'])
+                        ? $playlistData['snippet']['thumbnails']['maxres']['url']
+                        : null
                 ]
             );
 
@@ -44,7 +44,9 @@ class FetchYouTubePlaylists extends Command
                         'playlist_id' => $playlist->id,
                         'title' => $videoData['snippet']['title'],
                         'description' => $videoData['snippet']['description'],
-                        'thumbnail' => $videoData['snippet']['thumbnails']['default']['url'],
+                        'thumbnail' => isset($videoData['snippet']['thumbnails']['maxres'])
+                            ? $videoData['snippet']['thumbnails']['maxres']['url']
+                            : null,
                     ]
                 );
             }

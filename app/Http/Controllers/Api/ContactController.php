@@ -10,15 +10,6 @@ class ContactController extends Controller
 {
     public function sendContactMessage()
     {
-//        $validated = $request->validate([
-//            'email' => 'required|email',
-//            'message' => 'required',
-//        ]);
-        // Send an email with the user's message
-//        $details = [
-//            'title' => 'New Contact Message',
-//            'body' => $request->message
-//        ];
 
         Mail::raw('Hello Everyone', function(Message $message) {
             dd($message);

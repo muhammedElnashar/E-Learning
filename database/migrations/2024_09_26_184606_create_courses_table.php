@@ -22,6 +22,7 @@ return new class extends Migration {
                 ->constrained('playlists')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade')->onUpdate('cascade');
             $table->string('thumbnail')->nullable();
             $table->timestamps();
         });

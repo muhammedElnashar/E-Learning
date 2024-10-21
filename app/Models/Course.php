@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Api\Category;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,6 +28,7 @@ class Course extends Model
         'live_link',
         'live_schedule',
         'live_details',
+        'category_id'
     ];
 
     public function payments()
@@ -43,6 +45,10 @@ class Course extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function category()
+    {
+        $this->belongsTo(Category::class, 'category_id','');
+    }
     public function students()
     {
         return $this->belongsToMany(User::class, 'enrollments', 'course_id', 'user_id');
