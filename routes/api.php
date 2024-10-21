@@ -15,7 +15,8 @@ use App\Http\Controllers\Api\UserAnswerController;
 use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\InquiryController;
 use App\Http\Controllers\Api\CategoryController;
-
+use App\Http\Controllers\Api\CourseRatingController;
+use App\Http\Controllers\Api\TeacherRatingController;
 Route::post('/register', [RegisterationController::class, 'Register']);
 Route::post('/login', [RegisterationController::class, 'Login']);
 Route::post('/forget-password', [RegisterationController::class, 'forgetPassword']);
@@ -58,6 +59,12 @@ Route::middleware('auth:sanctum')->group(function ()
     Route::get('course/{course}/comments', [CommentController::class, 'index']);
     Route::delete('comment/{id}', [CommentController::class, 'destroy']);
     Route::get('user-score/{id}', [RegisterationController::class, 'getScore']);
+    //rating courses
+    Route::post('course/{course}/rate', [CourseRatingController::class, 'store']);
+    Route::get('course/{course}/ratings', [CourseRatingController::class, 'index']);
+    //rating teachers
+    Route::post('teacher/{teacher}/rate', [TeacherRatingController::class, 'store']);
+    Route::get('teacher/{teacher}/ratings', [TeacherRatingController::class, 'index']);
 });
 Route::apiResource('/courses', CourseController::class);
 Route::get('/teacher', [organizarController::class, 'getAllTeachers']);
@@ -66,3 +73,5 @@ Route::get('/teacher/{id}', [organizarController::class, 'getTeacher']);
 Route::post('/subscribe', [SubscriptionController::class, 'subscribe']);
 Route::post('/unsubscribe', [SubscriptionController::class, 'unsubscribe']);
 Route::post('/contact', [InquiryController::class, 'sendInquiry']);
+//search
+Route::get('/search', [CourseController::class, 'search']);
