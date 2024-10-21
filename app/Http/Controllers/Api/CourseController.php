@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -16,8 +17,10 @@ class CourseController extends Controller
         $courses = Course::all();
         return response()->json($courses, 200);
     }
+
     public function store(Request $request)
     {
+
         $validationRules = [
             'title' => 'required|string|max:255',
             'description' => 'required',
@@ -25,6 +28,7 @@ class CourseController extends Controller
             'is_free' => 'required|boolean',
             'instructor_id' => 'required|exists:users,id',
             'course_type' => 'required|in:video,live',
+            'category_id' => 'required|exists:categories,id',
         ];
 
         if ($request->course_type == 'live') {
@@ -41,14 +45,9 @@ class CourseController extends Controller
         }
 
         $validator = Validator::make($request->all(), $validationRules);
-
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        // $role_id =Auth::user()->role_id;
-        // if($role_id!=1||$role_id!=4||$role_id!=3){
-        //     return response()->json(['message' => 'Unauthorized'], 401);
-        // }
         $course = Course::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -62,22 +61,41 @@ class CourseController extends Controller
             'live_link' => $request->live_link ?? null,
             'live_schedule' => $request->live_schedule ?? null,
             'live_details' => $request->live_details ?? null,
+            'category_id' => $request->category_id,
         ]);
 
-        return response()->json($course, 201);
+        $subscribers = Subscription::all();
+        foreach ($subscribers as $subscriber) {
+            Mail::raw("
+A new course titled '{$course->title}' has been added,
+
+            Only for {$course->price} USD,
+            Would You Like to enroll!
+
+Best Regards,
+Ana-Kafou Team
+
+            ", function ($message) use ($subscriber) {
+
+
+                $message->to($subscriber->email)
+                    ->subject('Ana-Kafou Added New Course');
+            });
+        }
+
+        return response()->json([$course, 'message' => 'Course created and subscribers notified!'], 201);
+
     }
 
 
     public function show($id)
     {
         $course = Course::find($id);
-
+        $enrollments = Enrollment::where('course_id', $id)->get();
+        $course->enrollments = $enrollments;
         if (!$course) {
             return response()->json(['message' => 'Course not found'], 404);
         }
-
-        $enrollments = Enrollment::where('course_id', $id)->get();
-        $course->enrollments = $enrollments;
 
         return response()->json($course, 200);
     }
@@ -91,23 +109,36 @@ class CourseController extends Controller
         }
 
         $validationRules = [
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required',
+            'title' => 'sometimes|string|max:255',
+            'description' => 'sometimes',
             'price' => 'required_if:is_free,false|integer|min:0',
-            'is_free' => 'sometimes|required|boolean',
-            'instructor_id' => 'sometimes|required|exists:users,id',
-            'playlist_id' => 'sometimes|required|exists:playlists,id',
+            'is_free' => 'sometimes|boolean',
+            'instructor_id' => 'sometimes|exists:users,id',
+            'course_type' => 'sometimes|in:video,live',
+            'category_id' => 'sometimes|exists:categories,id',
         ];
 
-        $validator = Validator::make($request->all(), $validationRules);
+        if ($request->course_type == 'live') {
+            $validationRules = array_merge($validationRules, [
+                'live_platform' => 'sometimes|string|max:255',
+                'live_link' => 'sometimes|url',
+                'live_schedule' => 'sometimes|date',
+                'live_details' => 'sometimes|string',
+            ]);
+        } else {
+            $validationRules = array_merge($validationRules, [
+                'playlist_id' => 'sometimes|exists:playlists,id',
+            ]);
+        }
 
+        $validator = Validator::make($request->all(), $validationRules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
         $course->update($request->all());
 
-        return response()->json($course, 200);
+        return response()->json([$course, 'message' => 'Course Updated Successfully'], 200);
     }
 
     public function destroy($id)
@@ -122,6 +153,7 @@ class CourseController extends Controller
 
         return response()->json(['message' => 'Course deleted successfully'], 200);
     }
+
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -129,9 +161,6 @@ class CourseController extends Controller
             ->where('title', 'LIKE', '%' . $keyword . '%')
             ->orWhere('price', $keyword)
             ->get();
-
         return response()->json($courses);
     }
-
-
 }

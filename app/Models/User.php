@@ -85,5 +85,15 @@ class User extends Authenticatable
     {
         $this->belongsTo(Course::class);
     }
+    public function courseRatings()
+    {
+        return $this->hasMany(CourseRating::class);
+    }
+
+    public function teacherRatings()
+    {
+        return $this->hasMany(TeacherRating::class, 'teacher_id');
+    }
+
 
 }

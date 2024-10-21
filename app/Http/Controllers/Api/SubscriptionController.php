@@ -3,33 +3,37 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Mail\NotificationMail;
-use App\Models\Subscriber;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-
 
 class SubscriptionController extends Controller
 {
     public function subscribe(Request $request)
     {
-        $validated = $request->validate([
-            'email' => 'required|email|unique:subscribers,email',
-        ]);
-        $email = $request->input('email');
+        $request->validate(['email' => 'required|email|unique:subscriptions,email']);
 
-        Subscriber::create([
-            'email' => $validated['email'],
-        ]);
+        Subscription::create(['email' => $request->email]);
 
-        $details = [
-            'title' => 'Subscription Successful',
-            'body' => 'Thank you for subscribing to our newsletter!'
-        ];
+        Mail::raw('Thank you for subscribing Ana Kafou E-Learning Services!', function ($message) use ($request) {
+            $message->to($request->email)
+                ->subject('Subscription Confirmation');
+        });
 
-
-        Mail::to($email)->send(new NotificationMail($details));
-
-        return response()->json(['message' => 'Subscription successful']);
+        return response()->json(['message' => 'Subscribed Ana Kafou successfully!'], 201);
     }
+
+    public function unsubscribe(Request $request)
+    {
+        $subscription = Subscription::where('email', $request->email)->first();
+
+        if ($subscription) {
+            $subscription->delete();
+            return response()->json(['message' => 'Unsubscribed successfully!']);
+        }
+
+        return response()->json(['message' => 'Email not found!'], 404);
+    }
+
+
 }
