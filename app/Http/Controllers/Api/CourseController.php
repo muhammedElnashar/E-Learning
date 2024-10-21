@@ -160,7 +160,20 @@ Ana-Kafou Team
         $courses = Course::query()
             ->where('title', 'LIKE', '%' . $keyword . '%')
             ->orWhere('price', $keyword)
+
+            ->orWhere('category_id', 'LIKE', '%' . $keyword . '%')
             ->get();
         return response()->json($courses);
     }
+
+
+public function searchcategory(Request $request)
+{
+    $keyword = $request->input('keyword');
+    $courses = Course::query()
+        ->Where('category_id', 'LIKE', '%' . $keyword . '%')
+        ->get();
+    return response()->json($courses);
+
+}
 }
