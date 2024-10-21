@@ -167,11 +167,10 @@ Ana-Kafou Team
     }
 
 
-public function searchcategory(Request $request)
+public function searchcategory($id ,Request $request)
 {
-    $keyword = $request->input('keyword');
     $courses = Course::query()
-        ->Where('category_id', 'LIKE', '%' . $keyword . '%')
+        ->Where('category_id', 'LIKE', '%' . $id . '%')
         ->get();
     return response()->json($courses);
 
