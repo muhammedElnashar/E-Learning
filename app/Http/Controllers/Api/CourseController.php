@@ -17,6 +17,7 @@ class CourseController extends Controller
         $courses = Course::all();
         return response()->json($courses, 200);
     }
+
     public function store(Request $request)
     {
 
@@ -82,7 +83,7 @@ Ana-Kafou Team
             });
         }
 
-        return response()->json([$course,'message' => 'Course created and subscribers notified!'], 201);
+        return response()->json([$course, 'message' => 'Course created and subscribers notified!'], 201);
 
     }
 
@@ -137,7 +138,7 @@ Ana-Kafou Team
 
         $course->update($request->all());
 
-        return response()->json([$course,'message'=>'Course Updated Successfully'],200);
+        return response()->json([$course, 'message' => 'Course Updated Successfully'], 200);
     }
 
     public function destroy($id)
@@ -151,5 +152,15 @@ Ana-Kafou Team
         $course->delete();
 
         return response()->json(['message' => 'Course deleted successfully'], 200);
+    }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $courses = Course::query()
+            ->where('title', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('price', $keyword)
+            ->get();
+        return response()->json($courses);
     }
 }
