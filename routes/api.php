@@ -76,6 +76,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //rating teachers
     Route::post('teacher/{teacher}/rate', [TeacherRatingController::class, 'store']);
     Route::get('teacher/{teacher}/ratings', [TeacherRatingController::class, 'index']);
+    Route::get('check-enrollment-teacher', [EnrollmentController::class, 'checkEnrollForTeacherCourses']);
     
 });
 Route::apiResource('/courses', CourseController::class);
