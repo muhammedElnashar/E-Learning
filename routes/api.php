@@ -44,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function ()
     //Course
     Route::apiResource('playlists', PlaylistController::class);
     Route::apiResource('videos', VideoController::class);
-    Route::get('searchcategory/{id}', [CourseController::class,'searchcategory']);
+    Route::get('searchcategory/{id}', [CourseController::class,'searchCategory']);
     //Category
     Route::apiResource('categories',CategoryController::class);
     //payment

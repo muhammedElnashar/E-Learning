@@ -9,6 +9,7 @@ use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\Calculation\Logical\Boolean;
 
 class CourseController extends Controller
 {
@@ -167,7 +168,7 @@ Ana-Kafou Team
     }
 
 
-public function searchcategory($id ,Request $request)
+    public function searchCategory($id ,Request $request)
 {
     $courses = Course::query()
         ->Where('category_id', 'LIKE', '%' . $id . '%')
@@ -175,4 +176,5 @@ public function searchcategory($id ,Request $request)
     return response()->json($courses);
 
 }
+
 }
