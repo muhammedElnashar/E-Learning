@@ -6,10 +6,17 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "guzzlehttp/guzzle": "^7.9",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "laravel/ui": "^4.5"
+        "laravel/ui": "^4.5",
+        "maatwebsite/excel": "^3.1.58",
+        "mailgun/mailgun-php": "^4.3",
+        "phpoffice/phpspreadsheet": "^1.29.1",
+        "stripe/stripe-php": "^16.1",
+        "symfony/http-client": "^7.1",
+        "symfony/mailgun-mailer": "^7.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

@@ -12,7 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'isAdmin' => \App\Http\Middleware\IsAdmin::class,
+            'cors' => \App\Http\Middleware\Cors::class,
+
+
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
